@@ -14,6 +14,7 @@ const createWorkout = (workout, callback) => {
 const createWorkoutExercise = (workoutId, exercises, callback) => {
   var values = ""
   exercises.forEach(function(ex) {
+    console.log(ex)
     const exerciseId = ex.id;
     const reps = ex.reps;
     const sets = ex.sets;
@@ -21,7 +22,7 @@ const createWorkoutExercise = (workoutId, exercises, callback) => {
     const minutes = ex.minutes;
     values += `(${workoutId}, ${exerciseId}, ${reps}, ${sets}, ${weight}, ${minutes}),`;
   })
-  
+  console.log(values);
   return pool.query(
     "INSERT INTO workout_exercises (workout_id, exercises_id, reps, sets, weight, minutes) VALUES " + values.slice(0,-1),
     (err) => {
@@ -35,7 +36,17 @@ const findWorkoutExercises = (workoutId, callback) => {
     "SELECT name, reps, sets, minutes, type FROM workout_exercises AS we JOIN exercises ex ON ex.id = we.exercises_id WHERE workout_id = $1", 
     [workoutId], 
     (err, results) => {
-      callback(err, results);
+      callback(err, results.rows);
+    }
+  )
+}
+
+const findWorkoutByUserId = (userId, callback) => {
+  return pool.query(
+    "SELECT workout_id, w.name, description, d.name, ex.name, reps, sets, weight, minutes, type  FROM workouts AS w JOIN workout_exercises we ON we.workout_id = w.id JOIN exercises ex ON ex.id = we.exercises_id JOIN day d ON d.id = w.day_id WHERE user_id = $1", 
+    [userId], 
+    (err, results) => {
+      callback(err, results.rows);
     }
   )
 }
@@ -85,6 +96,7 @@ module.exports = {
   createWorkout,
   createWorkoutExercise,
   findWorkoutExercises,
+  findWorkoutByUserId,
   findWorkoutById,
   editWorkoutExercises,
   editWorkout,

@@ -3,6 +3,22 @@ const workouts = require('../entities/workouts');
 const jwt_service = require('../utils/jwt_service');
 const { check, validationResult } = require('express-validator/check');
 
+
+router.get('/workouts', (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    workouts.findWorkoutByUserId(user.id, (err, results)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to create workout."
+      });
+      res.status(200).send({ workouts: results });
+    });
+  }
+});
+
 //Route for creating a workout
 router.post('/workout', [
   check('name', 'Invalid name.').isLength({min:1, max:30}),
@@ -20,6 +36,10 @@ router.post('/workout', [
     }
 
     const { name, description, exercises, day } = request.body;
+    if(exercises.length > 15){
+      return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
+    }
+
     workouts.createWorkout([user.id, day, name, description], (err, workoutId)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
@@ -38,10 +58,8 @@ router.post('/workout', [
 
 //Route for creating a workout exercise
 router.post('/workout/exercise', [
-  check('name', 'Invalid name.').isLength({min:1, max:30}),
-  check('description', 'Description is too long.').isLength({max:255}),
-  check('exercises', 'No exercises were provided.').exists(),
-  check('day', 'Day was not chosen').exists()
+  check('exercises', 'Exercise required.').exists(),
+  check('workoutId', 'Workout id required.').exists()
 ], (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){
@@ -52,25 +70,29 @@ router.post('/workout/exercise', [
       return res.status(422).send({ error: err.array() });
     }
 
-    const { name, description, exercises, day } = request.body;
-    workouts.createWorkout([user.id, day, name, description], (err, workoutId)=>{
+    const { workoutId, exercises } = request.body;
+    workouts.findWorkoutExercises(workoutId, (err, results) => {
       if(err) return res.status(500).send({ 
         error: err.code,
-        message: "Server error! Failed to create workout."
+        message: "Server error! Failed to find workout."
+      });
+      if(results.length > 14) return res.status(422).send({ 
+        error: "Too many exercises. Maximum of 15 exercises per workout"
       });
       workouts.createWorkoutExercise(workoutId, exercises, (err) => {
         if(err) return res.status(500).send({ 
           error: err.code,
           message: "Server error! Failed to create workout exercise."
         });
-        res.status(200).send({ message: "Workout succesfully created!" });
-      })
-    });
+        res.status(200).send();
+      });
+    })
   }
 });
 
-//Route for registering a user
+//Route for updating a workout.
 router.put('/workout', [
+  check('workoutId', 'No workout id was provided.').exists(),
   check('name', 'Invalid name.').isLength({min:1, max:30}),
   check('description', 'Description is too long.').isLength({max:255}),
   check('exercises', 'No exercises were provided.').exists(),
@@ -97,20 +119,28 @@ router.put('/workout', [
 });
 
 //Route for editing a workout exercise
-router.put('/workout/exercise', (request, res) => {
-  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
-  if(!user){
-    res.status(401).send("Unauthorized");
-  }else{
-    const { workoutId, exercise } = request.body;
-    workouts.editWorkoutExercises(workoutId, exercise, (err, workoutId)=>{
-      if(err) return res.status(500).send({ 
-        error: err.code,
-        message: "Server error! Failed to update exercise."
+router.put('/workout/exercise', [
+    check('exercise', 'No exercise was provided.').exists(), 
+    check('workoutId', 'No workout id was provided.').exists()
+  ], (request, res) => {
+    const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+    if(!user){
+      res.status(401).send("Unauthorized");
+    }else{
+      const err = validationResult(request);
+      if(!err.isEmpty()){
+        return res.status(422).send({ error: err.array() });
+      }
+      const { workoutId, exercise } = request.body;
+      workouts.editWorkoutExercises(workoutId, exercise, (err, workoutId)=>{
+        if(err) return res.status(500).send({ 
+          error: err.code,
+          message: "Server error! Failed to update exercise."
+        });
+        res.status(200).send();
       });
-      res.status(200).send();
-    });
+    }
   }
-});
+);
 
 module.exports = router;
