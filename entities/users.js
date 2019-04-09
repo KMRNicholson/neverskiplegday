@@ -1,5 +1,6 @@
 const pool = require('../config/dbconfig').pool;
 const entities = require('./entities');
+const table = 'users';
 
 const createUser = (user, callback) => {
   return pool.query('INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)', user, (err) => {
@@ -14,12 +15,11 @@ const findUserByEmail = (email, callback) => {
 }
 
 const findUserById = (id, callback) => {
-  console.log(id);
-  return entities.findEntityById(id, "users",callback);
+  return entities.findEntityById(id, table, callback);
 }
 
 const deleteUserById = (id, callback) => {
-  return entities.findEntityById(id, "users", callback);
+  return entities.findEntityById(id, table, callback);
 }
 
 /*const updateUser = (request, response) => {
