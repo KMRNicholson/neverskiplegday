@@ -3,7 +3,7 @@ const workouts = require('../entities/workouts');
 const jwt_service = require('../utils/jwt_service');
 const { check, validationResult } = require('express-validator/check');
 
-
+//Gets the workouts associated to the user
 router.get('/workouts', (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){
@@ -40,12 +40,12 @@ router.post('/workout', [
       return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
     }
 
-    workouts.createWorkout([user.id, day, name, description], (err, workoutId)=>{
+    workouts.createWorkout([user.id, day, name, description], (err, results)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
         message: "Server error! Failed to create workout."
       });
-      workouts.createWorkoutExercise(workoutId, exercises, (err) => {
+      workouts.createWorkoutExercise(results.rows[0].id, exercises, (err) => {
         if(err) return res.status(500).send({ 
           error: err.code,
           message: "Server error! Failed to create workout exercise."
@@ -132,7 +132,7 @@ router.put('/workout/exercise', [
         return res.status(422).send({ error: err.array() });
       }
       const { workoutId, exercise } = request.body;
-      workouts.editWorkoutExercises(workoutId, exercise, (err, workoutId)=>{
+      workouts.editWorkoutExercises(workoutId, exercise, (err)=>{
         if(err) return res.status(500).send({ 
           error: err.code,
           message: "Server error! Failed to update exercise."
@@ -142,5 +142,58 @@ router.put('/workout/exercise', [
     }
   }
 );
+
+//Deletes a workout and the associated exercises
+router.delete('/workout', [
+  check('workoutId', 'Workout id required.').exists()
+], (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){
+      return res.status(422).send({ error: err.array() });
+    }
+    const { workoutId, exercise } = request.body;
+    workouts.deleteWorkoutExercises(workoutId, (err)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to delete exercises."
+      });
+      workouts.deleteWorkoutById(workoutId, (err)=>{
+        if(err) return res.status(500).send({ 
+          error: err.code,
+          message: "Server error! Failed to delete workout."
+        });
+        res.status(200).send();
+      })
+    });
+  }
+})
+
+//Deletes an exercise from a workout
+router.delete('/workout/exercise', [
+  check('workoutId', 'Workout id required.').exists(),
+  check('exerciseId', 'Exercise id required.').exists()
+], (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){
+      return res.status(422).send({ error: err.array() });
+    }
+    const { workoutId, exerciseId } = request.body;
+    workouts.deleteWorkoutExercise(workoutId, exerciseId, (err)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to delete exercises."
+      });
+      res.status(200).send();
+    });
+  }
+})
 
 module.exports = router;

@@ -6,7 +6,7 @@ const createWorkout = (workout, callback) => {
   return pool.query('INSERT INTO workouts (user_id, day_id, name, description) VALUES ($1, $2, $3, $4) RETURNING id', 
     workout, 
     (err, result) => {
-      callback(err, result.rows[0].id);
+      callback(err, result);
     }
   );
 }
@@ -14,7 +14,6 @@ const createWorkout = (workout, callback) => {
 const createWorkoutExercise = (workoutId, exercises, callback) => {
   var values = ""
   exercises.forEach(function(ex) {
-    console.log(ex)
     const exerciseId = ex.id;
     const reps = ex.reps;
     const sets = ex.sets;
@@ -22,7 +21,6 @@ const createWorkoutExercise = (workoutId, exercises, callback) => {
     const minutes = ex.minutes;
     values += `(${workoutId}, ${exerciseId}, ${reps}, ${sets}, ${weight}, ${minutes}),`;
   })
-  console.log(values);
   return pool.query(
     "INSERT INTO workout_exercises (workout_id, exercises_id, reps, sets, weight, minutes) VALUES " + values.slice(0,-1),
     (err) => {
@@ -57,13 +55,14 @@ const findWorkoutById = (id, callback) => {
 
 const editWorkoutExercises = (workoutId, info, callback) => {
   return pool.query(
-    'UPDATE workout_exercises SET exercises_id = $5, reps = $1, sets = $2, weight = $3, minutes = $4 WHERE workout_id = $6', [ 
+    'UPDATE workout_exercises SET exercises_id = $5, reps = $1, sets = $2, weight = $3, minutes = $4 WHERE workout_id = $6 AND exercises_id = $7', [ 
       info.reps,
       info.sets,
       info.weight,
       info.minutes,
-      info.exerciseId,
-      workoutId 
+      info.newId,
+      workoutId,
+      info.oldId 
     ], (err) => {
       callback(err);
     }
@@ -88,8 +87,14 @@ const deleteWorkoutExercises = (workoutId, callback) => {
   })
 }
 
+const deleteWorkoutExercise = (workoutId, exerciseId, callback) => {
+  return pool.query("DELETE FROM workout_exercises WHERE workout_id = $1 AND exercises_id = $2", [workoutId, exerciseId], (err) =>{
+    callback(err);
+  })
+}
+
 const deleteWorkoutById = (id, callback) => {
-  return entities.findEntityById(id, table, callback);
+  return entities.deleteEntityById(id, table, callback);
 }
 
 module.exports = {
@@ -101,5 +106,6 @@ module.exports = {
   editWorkoutExercises,
   editWorkout,
   deleteWorkoutExercises,
+  deleteWorkoutExercise,
   deleteWorkoutById
 }
