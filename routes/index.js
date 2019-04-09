@@ -1,25 +1,19 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const router = express.Router();
-const port = process.env.PORT || 3000;
-const users = require('./users');
-const jwt_service = require('./jwt_service');
+const router = require('express').Router();
+const users = require('../entities/users');
+const jwt_service = require('../utils/jwt_service');
 const bcrypt = require('bcryptjs');
 
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({ extended: false }));
-
-//Route that defines the root of the api
-app.get('/', (req, res) => {
-  res.status(200).send({ info: 'Node.js, Express, and Postgres API' })
-});
-
-router.get('/users', (request, res) => {
-  if(jwt_service.decode(request.headers.authorization) == null){
+router.get('/user', (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""), request.headers);
+  if(!user){
     res.status(401).send("Unauthorized");
-  };
+  }else{
+    users.findUserById(user.id, (err, user) =>{
+      if(err) return res.status(500).send("Server error! Failed to find user.");
+      if(!user) return res.status(404).send("User not found.");
+      res.status(200).send({"user": user});
+    })
+  }
 })
 
 //Route for registering a user
@@ -45,6 +39,7 @@ router.post('/signup', (request, res) => {
 router.post('/signin', (request, res) => {
   const email = request.body.email;
   const password = request.body.password;
+
   users.findUserByEmail(email, (err, user)=>{
     if(err) return res.status(500).send('Server error!');
     if(!user) return res.status(401).send('Email/Password are invalid!');
@@ -58,13 +53,4 @@ router.post('/signin', (request, res) => {
   });
 });
 
-//Routes defined for direct database manipulation. Will replace these with actual endpoints.
-router.get('/users/:id', users.getUserById)
-router.put('/users/:id', users.updateUser)
-router.delete('/users/:id', users.deleteUser)
-
-//Specified port to run the app on
-app.use(router);
-const server = app.listen(port, () => {
-  console.log('Server listening at http://localhost:'  +  port);
-}); 
+module.exports = router;

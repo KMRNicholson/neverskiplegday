@@ -6,19 +6,13 @@ var privateKEY = fs.readFileSync('./private.key', 'utf8');
 var publicKEY = fs.readFileSync('./public.key', 'utf8');
 
 module.exports = {
-  sign: (payload, $Options) => {
+  sign: (payload) => {
     // Token signing options
-    var signOptions = {
-        expiresIn:  $Options.expiresIn
-    };
-    return jwt.sign(payload, privateKEY, signOptions);
+    return jwt.sign(payload, privateKEY);
   },
-  verify: (token, $Options) => {
-    var verifyOptions = {
-      expiresIn: $Options.expiresIn
-    };
+  verify: (token) => {
     try{
-      return jwt.verify(token, publicKEY, verifyOptions);
+      return jwt.verify(token, privateKEY); //need to look into why public key isn't working
     }catch (err){
       return false;
     }

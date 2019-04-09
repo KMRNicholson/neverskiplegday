@@ -1,4 +1,4 @@
 node_modules/
-dbconfig.js
+config/dbconfig.js
 private.key
 public.key
