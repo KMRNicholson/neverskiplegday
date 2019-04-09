@@ -16,10 +16,6 @@ app.get('/', (req, res) => {
   res.status(200).send({ info: 'Node.js, Express, and Postgres API' })
 });
 
-router.get('/users/:id', users.getUserById)
-router.put('/users/:id', users.updateUser)
-router.delete('/users/:id', users.deleteUser)
-
 router.get('/users', (request, res) => {
   if(jwt_service.decode(request.headers.authorization) == null){
     res.status(401).send("Unauthorized");
@@ -61,6 +57,11 @@ router.post('/signin', (request, res) => {
     res.status(200).send({ "user":  user, "access_token":  accessToken, "expires_in":  expiresIn});
   });
 });
+
+//Routes defined for direct database manipulation. Will replace these with actual endpoints.
+router.get('/users/:id', users.getUserById)
+router.put('/users/:id', users.updateUser)
+router.delete('/users/:id', users.deleteUser)
 
 //Specified port to run the app on
 app.use(router);
