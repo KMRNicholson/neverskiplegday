@@ -1,0 +1,4 @@
+node_modules/
+dbconfig.js
+private.key
+public.key
