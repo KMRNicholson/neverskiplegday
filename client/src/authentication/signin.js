@@ -62,7 +62,10 @@ class signin extends Component {
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
           >
-            It seems something went wrong.. Please check your email and password and try again!<br/>
+            <Typography paragraph="true">
+            It seems something went wrong... <br/>
+            Please check your email and password and try again!
+            </Typography>
             <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
               OK
             </Button>

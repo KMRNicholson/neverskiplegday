@@ -10,7 +10,9 @@
 
 .modal {
   text-align: center;
-  margin: 7em;
+  margin: 5em;
+  padding: 1em;
+  outline:none;
 }
 
 #button {

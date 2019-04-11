@@ -75,7 +75,11 @@ class signup extends Component {
             onRequestClose={this.closeModal}
           >
             <Typography paragraph="true">
-            Please make sure all fields are filled in correctly and try again!.
+            It seems something went wrong...<br/> 
+            Please make sure all fields are filled in correctly and try again!. <br/><br/>
+            Password Requirements: <br/>
+            - minimum 6 characters long <br/>
+            - must be alphanumeric (includes letters and numbers)
             </Typography>
             <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
               OK
