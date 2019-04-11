@@ -15,7 +15,7 @@ export default class HttpHelperMethods {
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
     if (new AuthHelperMethods().loggedIn()) {
-      headers["Authorization"] = "Bearer " + AuthHelperMethods.getToken();
+      headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
     return axios.get(this.domain+url, {
@@ -32,7 +32,7 @@ export default class HttpHelperMethods {
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
     if (new AuthHelperMethods().loggedIn()) {
-      headers["Authorization"] = "Bearer " + AuthHelperMethods.getToken();
+      headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
     return axios.post(this.domain+url, payload, {
@@ -49,7 +49,7 @@ export default class HttpHelperMethods {
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
     if (this.loggedIn()) {
-      headers["Authorization"] = "Bearer " + AuthHelperMethods.getToken();
+      headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
     return axios.put(this.domain+url, payload, {
@@ -66,7 +66,7 @@ export default class HttpHelperMethods {
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
     if (this.loggedIn()) {
-      headers["Authorization"] = "Bearer " + AuthHelperMethods.getToken();
+      headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
     return axios.delete(this.domain+url, payload, {

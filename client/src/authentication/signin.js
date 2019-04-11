@@ -70,7 +70,7 @@ class signin extends Component {
               OK
             </Button>
           </Modal>
-          <Typography variant="title">Sign In</Typography>
+          <Typography variant="h6">Sign In</Typography>
           <TextField
             required
             label="Email"

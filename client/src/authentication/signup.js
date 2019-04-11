@@ -85,7 +85,7 @@ class signup extends Component {
               OK
             </Button>
           </Modal>
-          <Typography variant="title">Sign Up</Typography>
+          <Typography variant="h6">Sign Up</Typography>
           <TextField
             required
             label="First Name"

@@ -1,0 +1,20 @@
+.workout {
+  text-align: left;
+  padding: 1em;
+}
+
+.dash {
+  text-align: center;
+}
+
+.card {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#tab {
+  flex-grow: 1;
+}
