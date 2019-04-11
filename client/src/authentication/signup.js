@@ -5,6 +5,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import './authentication.css';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 class signup extends Component {
   /* In order to utilize our authentication methods within the AuthService class, we want to instantiate a new object */
@@ -18,6 +21,8 @@ class signup extends Component {
       lastName: ""
     };
     this.auth = new AuthHelperMethods();
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   /* Fired off every time the use enters something into the input fields */
@@ -29,16 +34,21 @@ class signup extends Component {
 
   _handleFormSubmit() {
     this.auth
-      .login(this.state.email, this.state.password)
+      .signin_signup("/signup", this.state)
       .then(res => {
-        if (res === false) {
-          return alert("Sorry those credentials don't exist!");
-        }
         this.props.history.replace("/");
       })
-      .catch(err => {
-        alert(err);
+      .catch(() => {
+        this.openModal();
       });
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   passwordCheck(){
@@ -57,50 +67,64 @@ class signup extends Component {
     }
 
     return (
-      <div className="signup">
-        <Typography variant="title">Sign Up</Typography>
-        <TextField
-          required
-          label="First Name"
-          value={this.state.firstName}
-          onChange={this._handleChange("firstName")}
-          style={tstyles}
-        /><br/>
-        <TextField
-          required
-          label="Last Name"
-          value={this.state.lastName}
-          onChange={this._handleChange("lastName")}
-          style={tstyles}
-        /><br/>
-        <TextField
-          required
-          label="Email"
-          value={this.state.email}
-          onChange={this._handleChange("email")}
-          style={tstyles}
-        /><br/>
-        <TextField
-          required
-          label="Password"
-          type="password"
-          value={this.state.password}
-          onChange={this._handleChange("password")}
-          style={tstyles}
-        /><br/>
-        <TextField
-          required
-          label="Confirm Password"
-          type="password"
-          value={this.state.passConfirm}
-          onChange={this._handleChange("passConfirm")}
-          style={tstyles}
-        /><br/>
-        <Button id="button" variant="contained" onClick={event => this._handleChange(event)}>
-          Sign Up
-        </Button>
-        <div>
-          Already have an account? Sign in <Link to="/signin" style={{ textDecoration: 'none' }}>here</Link>!
+      <div className="container">
+        <div className="signup card">
+          <Modal
+            className="modal"
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+          >
+            <Typography paragraph="true">
+            Please make sure all fields are filled in correctly and try again!.
+            </Typography>
+            <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
+              OK
+            </Button>
+          </Modal>
+          <Typography variant="title">Sign Up</Typography>
+          <TextField
+            required
+            label="First Name"
+            value={this.state.firstName}
+            onChange={this._handleChange("firstName")}
+            style={tstyles}
+          /><br/>
+          <TextField
+            required
+            label="Last Name"
+            value={this.state.lastName}
+            onChange={this._handleChange("lastName")}
+            style={tstyles}
+          /><br/>
+          <TextField
+            required
+            label="Email"
+            value={this.state.email}
+            onChange={this._handleChange("email")}
+            style={tstyles}
+          /><br/>
+          <TextField
+            required
+            label="Password"
+            type="password"
+            value={this.state.password}
+            onChange={this._handleChange("password")}
+            style={tstyles}
+          /><br/>
+          <TextField
+            required
+            label="Confirm Password"
+            type="password"
+            value={this.state.passConfirm}
+            onChange={this._handleChange("passConfirm")}
+            style={tstyles}
+          /><br/>
+          <Button id="button" variant="contained" onClick={event => this._handleFormSubmit(event)}>
+            Sign Up
+          </Button>
+          <div>
+            Already have an account? Sign in <Link to="/signin" style={{ textDecoration: 'none' }}>here</Link>!
+          </div>
         </div>
       </div>
     );

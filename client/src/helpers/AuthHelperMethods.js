@@ -1,4 +1,5 @@
 import decode from "jwt-decode";
+import HttpHelperMethods from './HttpHelperMethods';
 
 export default class AuthHelperMethods {
   constructor(domain) {
@@ -6,16 +7,11 @@ export default class AuthHelperMethods {
     this.domain = domain || "http://localhost:3000"; // API server domain
   }
   // Initializing important variables
-  login(email, password){
+  signin_signup(endpoint, payload){
     // Get a token from api server using the fetch api
-    return this.fetch(this.domain+`/signin`, {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password
-      })
-    }).then(res => {
-      this.setToken(res.access_token); // Setting the token in localStorage
+    return new HttpHelperMethods().post(endpoint, payload)
+    .then(res => {
+      this.setToken(res.data.access_token); // Setting the token in localStorage
       return Promise.resolve(res);
     });
   };
@@ -33,7 +29,6 @@ export default class AuthHelperMethods {
         return true;
       } else return false;
     } catch (err) {
-      console.log("expired check failed! Line 42: AuthService.js");
       return false;
     }
   };
@@ -53,7 +48,6 @@ export default class AuthHelperMethods {
   getConfirm(){
     // Using jwt-decode npm package to decode the token
     let answer = decode(this.getToken());
-    console.log("Received answer!");
     return answer;
   };
   fetch(url, options){

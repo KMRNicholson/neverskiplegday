@@ -1,13 +1,31 @@
 .signin {
   text-align: center;
-  margin: 5em;
+  padding: 1em;
 }
 
 .signup {
   text-align: center;
-  margin: 5em;
+  padding: 1em;
+}
+
+.modal {
+  text-align: center;
+  margin: 7em;
 }
 
 #button {
   margin: 1em;
+}
+
+.card {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:3em;
+}
+
+.container {
+  text-align: center;
+  background:#2196f3;
+  height: 100%;
 }

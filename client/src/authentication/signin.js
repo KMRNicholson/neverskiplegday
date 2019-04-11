@@ -4,6 +4,10 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import Modal from 'react-modal';
+import './authentication.css';
+
+Modal.setAppElement('#root');
 
 class signin extends Component {
   /* In order to utilize our authentication methods within the AuthService class, we want to instantiate a new object */
@@ -11,14 +15,16 @@ class signin extends Component {
     super();
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      openModal: false
     };
     this.auth = new AuthHelperMethods();
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   /* Fired off every time the use enters something into the input fields */
   _handleChange = name => event => {
-    console.log(event.target)
     this.setState({
       [name]: event.target.value
     });
@@ -26,16 +32,21 @@ class signin extends Component {
 
   _handleFormSubmit() {
     this.auth
-      .login(this.state.email, this.state.password)
+      .signin_signup("/signin", this.state)
       .then(res => {
-        if (res === false) {
-          return alert("Sorry those credentials don't exist!");
-        }
         this.props.history.replace("/");
       })
-      .catch(err => {
-        alert(err);
+      .catch(() => {
+        this.openModal();
       });
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
   }
 
   render() {
@@ -44,29 +55,41 @@ class signin extends Component {
     }
 
     return (
-      <div className="signin">
-        <Typography variant="title">Sign In</Typography>
-        <TextField
-          required
-          label="Email"
-          className="m-1"
-          value={this.state.email}
-          onChange={this._handleChange("email")}
-          style={tstyles}
-        /><br/>
-        <TextField
-          required
-          label="Password"
-          type="password"
-          value={this.state.password}
-          onChange={this._handleChange("password")}
-          style={tstyles}
-        /><br/>
-        <Button id="button" variant="contained" onClick={event => this._handleFormSubmit(event)}>
-          Sign In
-        </Button>
-        <div>
-          Don't have an account? Sign up <Link to="/signup" style={{ textDecoration: 'none' }}>here</Link>!
+      <div className="container">
+        <div className="signin card">
+          <Modal
+            className="modal"
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+          >
+            It seems something went wrong.. Please check your email and password and try again!<br/>
+            <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
+              OK
+            </Button>
+          </Modal>
+          <Typography variant="title">Sign In</Typography>
+          <TextField
+            required
+            label="Email"
+            className="m-1"
+            value={this.state.email}
+            onChange={this._handleChange("email")}
+            style={tstyles}
+          /><br/>
+          <TextField
+            required
+            label="Password"
+            type="password"
+            value={this.state.password}
+            onChange={this._handleChange("password")}
+            style={tstyles}
+          /><br/>
+          <Button id="button" variant="contained" onClick={event => this._handleFormSubmit(event)}>
+            Sign In
+          </Button>
+          <div>
+            Don't have an account? Sign up <Link to="/signup" style={{ textDecoration: 'none' }}>here</Link>!
+          </div>
         </div>
       </div>
     );
