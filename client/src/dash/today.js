@@ -26,21 +26,21 @@ class today extends Component {
     var desc;
     var i = 1;
     this.props.parent.state.workouts.find(function(workout){
-      if(workout.day == day) {
+      if(workout.day === day) {
         workoutName = workout.workout
         desc = workout.description
         var name=workout.exercise
         var reps=workout.reps
         var sets=workout.sets
         var weight=workout.weight
-        exercises.push(<Typography key={"exercise"+i++}>
-          {name} <br/>
-          Reps: {reps} Sets: {sets} Weight: {weight} <br/>
+        exercises.push(<Typography component={'span'} key={"exercise"+i++}>
+          <br/> {name} <br/>
+          Reps: {reps} Sets: {sets} Weight: {weight}
         </Typography>)
-      } 
+      }
+      return null; 
     });
-    console.log(exercises);
-    if(exercises === undefined || exercises.length == 0){
+    if(exercises === undefined || exercises.length === 0){
       workoutName = "No workout today"
     }
     this.setState({

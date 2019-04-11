@@ -54,7 +54,7 @@ class dash extends Component {
         break;
       case 2:
         comp.push(
-        <Button variant="contained" onClick={event => this._handleLogout()}>
+        <Button key="logout" variant="contained" onClick={event => this._handleLogout()}>
           Sign In
         </Button>)
         break;
