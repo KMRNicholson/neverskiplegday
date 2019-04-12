@@ -19,8 +19,6 @@ class signin extends Component {
       openModal: false
     };
     this.auth = new AuthHelperMethods();
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
   /* Fired off every time the use enters something into the input fields */
@@ -74,7 +72,6 @@ class signin extends Component {
           <TextField
             required
             label="Email"
-            className="m-1"
             value={this.state.email}
             onChange={this._handleChange("email")}
             style={tstyles}

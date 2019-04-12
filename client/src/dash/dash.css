@@ -5,6 +5,32 @@
 
 .dash {
   text-align: center;
+  height:100%;
+}
+
+.today {
+  height:100%;
+}
+
+#tooltip {
+  position:absolute;
+  bottom:0;
+  right:0;
+  margin:1em;
+}
+
+.nw-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  padding:1em;
+  margin:1em;
+}
+
+.t-container {
+  height:100%;
+  position: relative;
 }
 
 .card {

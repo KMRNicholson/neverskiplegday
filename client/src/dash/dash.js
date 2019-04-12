@@ -55,7 +55,7 @@ class dash extends Component {
       case 2:
         comp.push(
         <Button key="logout" variant="contained" onClick={event => this._handleLogout()}>
-          Sign In
+          Sign Out
         </Button>)
         break;
       default:
@@ -85,13 +85,11 @@ class dash extends Component {
             Never Skip Leg Day!
           </Typography>
         </Toolbar>
-      </AppBar>
-      <AppBar position="static">
-          <Tabs value={this.state.value} onChange={this._handleChange}>
-            <Tab id="tab" icon={<Today/>} />
-            <Tab id="tab" label={<Week/>} />
-            <Tab id="tab" label={<User/>} />
-          </Tabs>
+        <Tabs value={this.state.value} onChange={this._handleChange}>
+          <Tab id="tab" icon={<Today/>} />
+          <Tab id="tab" label={<Week/>} />
+          <Tab id="tab" label={<User/>} />
+        </Tabs>
       </AppBar>
       {this.state.component}<br/>
       </div>
