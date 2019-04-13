@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const workouts = require('../entities/workouts');
+const exercises = require('../entities/exercises');
 const jwt_service = require('../utils/jwt_service');
 const { check, validationResult } = require('express-validator/check');
 
@@ -15,6 +16,21 @@ router.get('/workouts', (request, res) => {
         message: "Server error! Failed to create workout."
       });
       res.status(200).send({ workouts: results });
+    });
+  }
+});
+
+router.get('/exercises', (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    exercises.findAllExercises((err, results)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to create workout."
+      });
+      res.status(200).send(results);
     });
   }
 });

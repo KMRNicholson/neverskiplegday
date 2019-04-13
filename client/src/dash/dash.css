@@ -8,6 +8,25 @@
   height:100%;
 }
 
+.ex-info {
+  text-align: left;
+  margin-top: .5em;
+}
+
+.ex {
+  margin-top:1.5em;
+  margin-left:0.1em;
+}
+
+.exercise {
+  outline: 1;
+}
+
+#ei-button {
+  float: right;
+  margin-top: 1em;
+}
+
 .today {
   height:100%;
 }
@@ -26,6 +45,7 @@
   text-align: center;
   padding:1em;
   margin:1em;
+  overflow-y: scroll;
 }
 
 .t-container {

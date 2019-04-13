@@ -1,6 +1,12 @@
 const pool = require('../config/dbconfig').pool;
 
 module.exports = {
+  findAllEntities: (table, callback) => {
+    return pool.query('SELECT * FROM ' + table, (err, results) => {
+      console.log(err)
+      callback(err, results.rows);
+    })
+  },
   findEntityById: (id, table, callback) => {
     return pool.query('SELECT * FROM ' + table + ' WHERE id = $1', [id], (err, results) => {
       console.log(err)

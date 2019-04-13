@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import './dash.css';
 import { Typography } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Search from './IntegrationAutosuggest';
+import Exercises from './exercises';
+import AddIcon from '@material-ui/icons/Add';
+import Button from "@material-ui/core/Button";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 Modal.setAppElement('#root');
 
@@ -21,6 +22,7 @@ class today extends Component {
       day:"",
       exercises:[],
       tooltip:[],
+      exerciseId:'',
       openModal: false
     }
     this.openModal = this.openModal.bind(this);
@@ -31,7 +33,7 @@ class today extends Component {
     this.setState({modalIsOpen: true});
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({modalIsOpen: false});
   }
 
@@ -73,7 +75,7 @@ class today extends Component {
 
     if(exercises === undefined || exercises.length === 0){
       workoutName = "No workout today"
-      tooltip.push(<div className="t-container">
+      tooltip.push(<div key="add"  className="t-container">
           <Tooltip title="Add" aria-label="Add" onClick={event=>this._handleNew(event)}>
             <Fab color="secondary" id="tooltip">
               <AddIcon />
@@ -82,7 +84,7 @@ class today extends Component {
         </div>
         )
     }else{
-      tooltip.push(<div>
+      tooltip.push(<div key="edit" className="t-container">
         <Tooltip title="Edit" aria-label="Edit" >
           <Fab color="secondary" id="tooltip">
             <EditIcon />
@@ -91,6 +93,8 @@ class today extends Component {
       </div>
       )
     }
+
+
     this.setState({
       name:workoutName,
       day:day,
@@ -102,7 +106,7 @@ class today extends Component {
 
   render() {
     const tstyles = {
-      margin:10
+      margin:2
     }
 
     return (
@@ -116,6 +120,7 @@ class today extends Component {
             New Workout
           </Typography>
           <TextField
+          fullWidth
           required
           label="Name"
           value={this.state.name}
@@ -123,39 +128,19 @@ class today extends Component {
           style={tstyles}
           /><br/>
           <TextField
+          fullWidth
             required
             label="Description"
             value={this.state.description}
             onChange={this._handleChange("description")}
             style={tstyles}
           /><br/>
-          <Search></Search>
-          <TextField
-            required
-            label="Reps"
-            value={this.state.description}
-            onChange={this._handleChange("description")}
-            style={tstyles}
-          /><br/>
-          <TextField
-            required
-            label="Sets"
-            value={this.state.description}
-            onChange={this._handleChange("description")}
-            style={tstyles}
-          /><br/>
-          <TextField
-            required
-            label="Weight"
-            value={this.state.description}
-            onChange={this._handleChange("description")}
-            style={tstyles}
-          /><br/>
-          <Button id="button" variant="contained" color="primary" onClick={event => this.closeModal(event)}>
-            Create
+          <Exercises parent={this} className="exercise"/>
+          <Button id="button" variant="contained" color="primary" onClick={event => this._handleFormSubmit(event)}>
+            Submit
           </Button>
-          <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
-            Cancel
+          <Button id="button" variant="contained" onClick={event => this.props.parent.closeModal()}>
+            <CancelIcon/>
           </Button>
         </Modal>
         <div className="workout card">
