@@ -1,11 +1,13 @@
 .workout {
   text-align: left;
+  margin-top: 10em;
   padding: 1em;
 }
 
 .dash {
   text-align: center;
   height:100%;
+  position: relative;
 }
 
 .ex-info {
@@ -31,14 +33,29 @@
   overflow-y: scroll;
 }
 
+.app-bars {
+  position: absolute;
+  width:100%;
+  z-index:1;
+}
+
 .today {
   height:100%;
+  width: 100%;
+  position: absolute;
 }
 
 #tooltip {
   position:absolute;
   bottom:0;
   right:0;
+  margin:1em;
+}
+
+#tooltip-2 {
+  position:absolute;
+  bottom:0;
+  right:5em;
   margin:1em;
 }
 
@@ -50,15 +67,25 @@
   padding:1em;
   margin:1em;
   overflow-y: scroll;
+  z-index: 1;
+}
+
+.confirm {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  width: 200px;
+  height: 125px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -100px;
+  margin-top: -75px;
 }
 
 .nw-work {
   overflow-y: scroll;
-}
-
-.t-container {
-  height:100%;
-  position: relative;
 }
 
 .card {
@@ -66,6 +93,7 @@
   border-radius: .5em;
   display: inline-block;
   margin:2em;
+  margin-top:10em;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 

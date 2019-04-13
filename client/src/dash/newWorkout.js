@@ -73,6 +73,14 @@ class newWorkout extends Component {
       });
   };
 
+  componentDidMount(){
+    if(this.props.parent.state.workoutName === "No workout today."){
+      console.log("new");
+    }else{
+      console.log("edit");
+    }
+  }
+
   render() {
     const tstyles = {
       margin: 2

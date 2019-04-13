@@ -187,7 +187,7 @@ router.delete('/workout', [
     if(!err.isEmpty()){
       return res.status(422).send({ error: err.array() });
     }
-    const { workoutId, exercise } = request.body;
+    const { workoutId } = request.body;
     workouts.deleteWorkoutExercises(workoutId, (err)=>{
       if(err) return res.status(500).send({ 
         error: err.code,

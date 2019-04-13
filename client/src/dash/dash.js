@@ -66,32 +66,41 @@ class dash extends Component {
   };
 
   componentDidMount = () => {
+    console.log("NOT LETTING ME DO THIS")
     this.setState({component:[]});
     var day = weekdays[new Date().getDay()];
     return new HttpHelperMethods().get(route+"/workouts")
     .then(res => {
       var component = []
       component.push(<Workout key="today" parent={this} day={day}></Workout>)
+      console.log(component)
+      console.log(res.data)
       this.setState({value:0, component:component, workouts:res.data.workouts});
       return Promise.resolve(res);
     });
   }
 
+  reloadToday = () => {
+    this.setState({component:[]});
+  }
+
   render() {
     return (
       <div className="dash">
-        <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography variant="h6" color="inherit">
-            Never Skip Leg Day!
-          </Typography>
-        </Toolbar>
-        <Tabs value={this.state.value} onChange={this._handleChange}>
-          <Tab id="tab" icon={<Today/>} />
-          <Tab id="tab" label={<Week/>} />
-          <Tab id="tab" label={<User/>} />
-        </Tabs>
-      </AppBar>
+        <div className="app-bars">
+          <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography variant="h6" color="inherit">
+              Never Skip Leg Day!
+            </Typography>
+          </Toolbar>
+          <Tabs value={this.state.value} onChange={this._handleChange}>
+            <Tab id="tab" icon={<Today/>} />
+            <Tab id="tab" label={<Week/>} />
+            <Tab id="tab" label={<User/>} />
+          </Tabs>
+        </AppBar>
+        </div>
       {this.state.component}<br/>
       </div>
     );
