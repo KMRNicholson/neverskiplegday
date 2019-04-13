@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const workouts = require('../entities/workouts');
 const exercises = require('../entities/exercises');
+const days = require('../entities/days');
 const jwt_service = require('../utils/jwt_service');
 const { check, validationResult } = require('express-validator/check');
 
@@ -20,6 +21,22 @@ router.get('/workouts', (request, res) => {
   }
 });
 
+router.post("/day", (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const {name} = request.body
+    days.findDayByName(name, (err, results)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to find day."
+      });
+      res.status(200).send(results);
+    });
+  }
+})
+
 router.get('/exercises', (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){
@@ -28,7 +45,7 @@ router.get('/exercises', (request, res) => {
     exercises.findAllExercises((err, results)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
-        message: "Server error! Failed to create workout."
+        message: "Server error! Failed to get exercises."
       });
       res.status(200).send(results);
     });
@@ -55,12 +72,17 @@ router.post('/workout', [
     if(exercises.length > 15){
       return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
     }
-
+    console.log(name);
+    console.log(description)
+    console.log(day)
+    console.log(user.id)
     workouts.createWorkout([user.id, day, name, description], (err, results)=>{
+      console.log(err)
       if(err) return res.status(500).send({ 
         error: err.code,
         message: "Server error! Failed to create workout."
       });
+      console.log(results)
       workouts.createWorkoutExercise(results.rows[0].id, exercises, (err) => {
         if(err) return res.status(500).send({ 
           error: err.code,

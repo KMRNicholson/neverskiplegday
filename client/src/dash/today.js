@@ -5,11 +5,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
-import TextField from "@material-ui/core/TextField";
-import Exercises from './exercises';
 import AddIcon from '@material-ui/icons/Add';
-import Button from "@material-ui/core/Button";
-import CancelIcon from '@material-ui/icons/Cancel';
+import NewWorkout from './newWorkout'
 
 Modal.setAppElement('#root');
 
@@ -22,7 +19,6 @@ class today extends Component {
       day:"",
       exercises:[],
       tooltip:[],
-      exerciseId:'',
       openModal: false
     }
     this.openModal = this.openModal.bind(this);
@@ -34,6 +30,7 @@ class today extends Component {
   }
 
   closeModal = () => {
+    this.props.parent.componentDidMount();
     this.setState({modalIsOpen: false});
   }
 
@@ -94,7 +91,6 @@ class today extends Component {
       )
     }
 
-
     this.setState({
       name:workoutName,
       day:day,
@@ -105,10 +101,6 @@ class today extends Component {
   }
 
   render() {
-    const tstyles = {
-      margin:2
-    }
-
     return (
       <div className="today">
         <Modal
@@ -116,32 +108,7 @@ class today extends Component {
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
           >
-          <Typography variant="h6">
-            New Workout
-          </Typography>
-          <TextField
-          fullWidth
-          required
-          label="Name"
-          value={this.state.name}
-          onChange={this._handleChange("name")}
-          style={tstyles}
-          /><br/>
-          <TextField
-          fullWidth
-            required
-            label="Description"
-            value={this.state.description}
-            onChange={this._handleChange("description")}
-            style={tstyles}
-          /><br/>
-          <Exercises parent={this} className="exercise"/>
-          <Button id="button" variant="contained" color="primary" onClick={event => this._handleFormSubmit(event)}>
-            Submit
-          </Button>
-          <Button id="button" variant="contained" onClick={event => this.props.parent.closeModal()}>
-            <CancelIcon/>
-          </Button>
+          <NewWorkout parent={this}/>
         </Modal>
         <div className="workout card">
           <Typography variant="h6">

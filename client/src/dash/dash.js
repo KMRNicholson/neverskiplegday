@@ -65,7 +65,8 @@ class dash extends Component {
     this.setState({ value:value, component:comp });
   };
 
-  componentDidMount(){
+  componentDidMount = () => {
+    this.setState({component:[]});
     var day = weekdays[new Date().getDay()];
     return new HttpHelperMethods().get(route+"/workouts")
     .then(res => {

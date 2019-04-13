@@ -2,18 +2,17 @@
 import HttpHelperMethods from '../helpers/HttpHelperMethods';
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import Select from 'react-select';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddIcon from '@material-ui/icons/Add';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import Button from "@material-ui/core/Button";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const route = "/dashboard"
 
@@ -165,19 +164,26 @@ class exercises extends React.Component {
       exercise: null,
       suggestions: [],
       exerciseInfo:[],
-      reps:'',
-      sets:'',
-      weight:'',
-      minutes:''
+      id:'',
+      reps:0,
+      sets:0,
+      weight:0,
+      minutes:0,
+      type:''
     }
   }
 
   _handleFormSubmit(){
-    console.log(this)
-    console.log(this.props.parent)
+    this.props.exercises.push()
   }
 
-  handleChange = name => value => {
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value
+    });
+  };
+
+  handleSelection = name => value => {
     this.setState({
       [name]: value,
     });
@@ -204,9 +210,10 @@ class exercises extends React.Component {
     if(this.props === prevProps){
       if(this.state.exercise !== null){
         this.props.parent.setState({
-          exerciseId:this.state.exercise.id
+          exerciseId:this.state.exercise.id,
+          exerciseName:this.state.exercise.label
         })
-        if(this.state.exercise.type == 0){ 
+        if(this.state.exercise.type === 0){ 
           exerciseInfo.push(<div key="exercise-info" className="ex-info">
             <TextField
             label="Reps"
@@ -231,7 +238,14 @@ class exercises extends React.Component {
             <Button id="ei-button" 
               variant="contained" 
               color="primary"
-              onClick={event=>this._handleFormSubmit()}>
+              onClick={event=>this.props.parent.addExercise([{
+                id:this.state.exercise.id,
+                name:this.state.exercise.label,
+                reps:this.state.reps,
+                sets:this.state.sets,
+                weight:this.state.weight,
+                minutes:this.state.minutes,
+                type:this.state.exercise.type}])}>
               <AddIcon/>
             </Button>
           </div>);
@@ -247,12 +261,17 @@ class exercises extends React.Component {
             <Button id="ei-button" 
               variant="contained" 
               color="primary"
-              onClick={event=>this._handleFormSubmit()}>
+              onClick={event=>this.props.parent.addExercise()}>
               <AddIcon/>
             </Button>
           </div>);
           this.setState({exerciseInfo:exerciseInfo});
         }
+      }else{
+        this.props.parent.setState({
+          exerciseId:new Date().getTime()
+        })
+        this.setState({exerciseInfo:exerciseInfo});
       }
     }
   }
@@ -282,11 +301,17 @@ class exercises extends React.Component {
             components={components}
             value={this.state.exercise}
             placeholder="Exercise (required)"
-            onChange={this.handleChange('exercise')}
+            onChange={this.handleSelection('exercise')}
             isClearable
           />
         </NoSsr>
         {this.state.exerciseInfo}
+        <Button id="button" variant="contained" color="primary" onClick={event => this.props.parent._handleFormSubmit(event)}>
+          Submit
+        </Button>
+        <Button id="button" variant="contained" onClick={event => this.props.parent.props.parent.closeModal()}>
+          <CancelIcon/>
+        </Button>
       </div>
     );
   }
