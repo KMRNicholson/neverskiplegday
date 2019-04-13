@@ -72,17 +72,11 @@ router.post('/workout', [
     if(exercises.length > 15){
       return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
     }
-    console.log(name);
-    console.log(description)
-    console.log(day)
-    console.log(user.id)
     workouts.createWorkout([user.id, day, name, description], (err, results)=>{
-      console.log(err)
       if(err) return res.status(500).send({ 
         error: err.code,
         message: "Server error! Failed to create workout."
       });
-      console.log(results)
       workouts.createWorkoutExercise(results.rows[0].id, exercises, (err) => {
         if(err) return res.status(500).send({ 
           error: err.code,
