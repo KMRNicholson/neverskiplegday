@@ -11,6 +11,6 @@ If one decides they want to set up my project, they will need:
 
 Once postgres is installed, the developer will need to create a database for the project. The dbconfig can be found in the config folder in the root directory. Another thing to mention is the user will need to create their over private.key file which contains a secret that is used to sign JWT. Ideally, this will eventually use a private.key and public.key file. I have yet to look into it. However, for now the developer will need to create their own and place it in the root directory.
 
-In order to start the application, enter `npm start-both` in a terminal while in the root directory.
+In order to start the application, run `npm install` in both the root directory, and the client directory. Then run `npm start-both` in a terminal while in the root directory.
 
 That should be it for now!
