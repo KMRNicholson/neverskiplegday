@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography } from "@material-ui/core";
+import { Typography }  from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Exercises from "./exercises";
 import HttpHelperMethods from "../../helpers/HttpHelperMethods";
@@ -75,6 +75,7 @@ class workout extends Component {
       .then(res => {
         comp.props.parent.closeModal();
         comp.props.parent.pageRefresh();
+        comp.props.parent.props.parent.componentReload("test");
         return Promise.resolve(res);
       });
     }

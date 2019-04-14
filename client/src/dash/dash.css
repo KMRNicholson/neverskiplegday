@@ -1,4 +1,15 @@
-.workout-card {
+.weekday-workout-card {
+  text-align: left;
+  padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:1em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.today-workout-card {
   text-align: left;
   padding: 1em;
   background-color: #F2F2F2;
@@ -9,9 +20,23 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
+.day-card {
+  text-align: left;
+  width:100%;
+  background-color: #F2F2F2;
+  display: inline-block;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.weekday {
+  height:100%;
+  width: 100%;
+}
+
 .dash {
   text-align: center;
   height:100%;
+  width: 100%;
   position: relative;
 }
 
@@ -36,10 +61,17 @@
 
 .ReactModal__Overlay{
   overflow-y: scroll;
+  z-index: 2;
 }
 
-.app-bars {
+.today-app-bars {
   position: absolute;
+  z-index: 1;
+  width:100%;
+}
+
+.week-app-bars {
+  z-index: 1;
   width:100%;
 }
 
@@ -49,17 +81,33 @@
   position: absolute;
 }
 
-#tooltip {
+.week {
+  height:100%;
+  width: 100%;
+  position: absolute;
+}
+
+#today-tooltip {
   position:absolute;
   bottom:0;
   right:0;
   margin:1em;
 }
 
-#tooltip-2 {
+#weekday-tooltip {
+  float:right;
+  margin:1em;
+}
+
+#today-tooltip-2 {
   position:absolute;
   bottom:0;
   right:5em;
+  margin:1em;
+}
+
+#weekday-tooltip-2 {
+  float:right;
   margin:1em;
 }
 
