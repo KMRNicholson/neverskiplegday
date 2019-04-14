@@ -183,6 +183,30 @@ router.put('/workout/exercise', [
   }
 );
 
+router.put('/workout/exercise-log', [
+  check('log', 'Log is too long.').isLength({min:0, max:50}),
+  check('weId', 'Workout Exercises id required.').exists()
+], (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){
+      return res.status(422).send({ error: err.array() });
+    }
+    const { log, weId } = request.body;
+    workouts.updateLog(weId, log, (err)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to update exercise."
+      });
+      res.status(200).send();
+    });
+  }
+}
+);
+
 //Deletes a workout and the associated exercises
 router.delete('/workout', [
   check('workoutId', 'Workout id required.').exists()
