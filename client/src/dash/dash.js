@@ -51,6 +51,7 @@ class dash extends Component {
   _handleChange = (event, value) => {
     var comp = []
     var day = weekdays[new Date().getDay()];
+    localStorage.setItem("tab", value.toString());
     switch(value){
       case 0:
         comp.push(<Today key={"today"} parent={this} className={"today"} day={day}/>)
@@ -71,15 +72,8 @@ class dash extends Component {
     this.setState({ value:value, component:comp });
   };
 
-  componentReload=(test)=>{
-    console.log("WHY")
-    console.log(test)
-  }
-
-  componentDidMount = (test) => {
-    console.log("refresh even more")
-    console.log(test)
-    this.setState({component:[]});
+  componentDidMount = () => {
+    this.setState({component:[], value:Number(localStorage.getItem("tab"))});
     var day = weekdays[new Date().getDay()];
     return new HttpHelperMethods().get(route+"/workouts")
     .then(res => {
@@ -98,7 +92,7 @@ class dash extends Component {
           </Button>)
           break;
         default:
-          comp.push("Error")
+          comp.push(<Today key={"today"} parent={this} className={"today"} day={day}/>)
           break;
       }
       this.setState({component:comp, workouts:res.data.workouts});

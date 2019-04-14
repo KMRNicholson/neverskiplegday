@@ -75,7 +75,6 @@ class workout extends Component {
       .then(res => {
         comp.props.parent.closeModal();
         comp.props.parent.pageRefresh();
-        comp.props.parent.props.parent.componentReload("test");
         return Promise.resolve(res);
       });
     }

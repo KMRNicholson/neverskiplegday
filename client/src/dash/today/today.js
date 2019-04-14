@@ -47,12 +47,7 @@ class today extends Component {
   }
 
   pageRefresh = () => {
-    if(this.props.parent.state.value === 0){
-      window.location.reload();
-    }else{
-      console.log("refresh")
-      this.props.parent.componentDidMount("test");
-    }
+    window.location.reload();
   }
 
   _handleChange = name => event => {
@@ -69,7 +64,7 @@ class today extends Component {
     today = this;
     return new HttpHelperMethods().delete(route+"/workout", {workoutId:today.state.workoutId})
     .then(res => {
-      if(this.props.parent.state.value === 0) window.location.reload();
+      window.location.reload();
       today.closeModal();
       return Promise.resolve(res);
     })
