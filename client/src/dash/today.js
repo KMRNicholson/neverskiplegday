@@ -43,8 +43,11 @@ class today extends Component {
   }
 
   closeModal = () => {
-    window.location.reload();
     this.setState({modalIsOpen: false, confirmDel:false});
+  }
+
+  pageRefresh = () => {
+    window.location.reload();
   }
 
   _handleChange = name => event => {
@@ -62,6 +65,7 @@ class today extends Component {
     return new HttpHelperMethods().delete(route+"/workout", {workoutId:today.state.workoutId})
     .then(res => {
       window.location.reload();
+      today.closeModal();
       return Promise.resolve(res);
     })
   }
@@ -148,7 +152,7 @@ class today extends Component {
           isOpen={this.state.confirmDel}
           onRequestClose={this.closeModal}>
           <Typography style={{margin:5}}>
-            Are you sure you want to delete workout?
+            Are you sure you want to delete today's workout?
           </Typography>
           <Button id="button" variant="contained" color="primary" onClick={event => this.closeModal()}>
             <CancelIcon/>
@@ -164,7 +168,7 @@ class today extends Component {
           >
           <NewWorkout parent={this}/>
         </Modal>
-        <div className="workout card">
+        <div className="workout-card">
           <Typography variant="h6">
           {this.state.name}
           </Typography>

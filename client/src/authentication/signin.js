@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthHelperMethods from "../helpers/AuthHelperMethods";
+import Logo from "../images/nsld-long.png"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -54,6 +55,7 @@ class signin extends Component {
 
     return (
       <div className="container">
+        <img src={Logo} alt={"Never Skip Leg Day"} className="fp-logo" />
         <div className="signin card">
           <Modal
             className="modal"
@@ -68,6 +70,7 @@ class signin extends Component {
               OK
             </Button>
           </Modal>
+          
           <Typography variant="h6">Sign In</Typography>
           <TextField
             required

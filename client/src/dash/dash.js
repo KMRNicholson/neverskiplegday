@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AuthHelperMethods from '../helpers/AuthHelperMethods';
 import HttpHelperMethods from '../helpers/HttpHelperMethods';
+import Logo from '../images/nsld-short.png';
 import Button from "@material-ui/core/Button";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -87,13 +88,10 @@ class dash extends Component {
   render() {
     return (
       <div className="dash">
-        <div className="app-bars">
+      {this.state.component}
+      <div className="app-bars">
           <AppBar position="static" color="primary">
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              Never Skip Leg Day!
-            </Typography>
-          </Toolbar>
+            <img src={Logo} alt={"Never Skip Leg Day"} className="logo" />
           <Tabs value={this.state.value} onChange={this._handleChange}>
             <Tab id="tab" icon={<Today/>} />
             <Tab id="tab" label={<Week/>} />
@@ -101,7 +99,6 @@ class dash extends Component {
           </Tabs>
         </AppBar>
         </div>
-      {this.state.component}<br/>
       </div>
     );
   }

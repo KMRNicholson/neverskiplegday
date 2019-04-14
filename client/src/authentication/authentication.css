@@ -3,6 +3,11 @@
   padding: 1em;
 }
 
+.fp-logo {
+  max-width: 250px;
+  padding: 1em;
+}
+
 .signup {
   text-align: center;
   padding: 1em;
@@ -23,7 +28,9 @@
   background-color: #F2F2F2;
   border-radius: .5em;
   display: inline-block;
-  margin:3em;
+  margin-left:3em;
+  margin-right:3em;
+  margin-bottom: 2em;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -31,4 +38,5 @@
   text-align: center;
   background:#2196f3;
   height: 100%;
+  overflow-y: scroll;
 }

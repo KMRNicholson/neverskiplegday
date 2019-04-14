@@ -1,7 +1,12 @@
-.workout {
+.workout-card {
   text-align: left;
-  margin-top: 10em;
   padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:10em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .dash {
@@ -36,7 +41,6 @@
 .app-bars {
   position: absolute;
   width:100%;
-  z-index:1;
 }
 
 .today {
@@ -88,13 +92,9 @@
   overflow-y: scroll;
 }
 
-.card {
-  background-color: #F2F2F2;
-  border-radius: .5em;
-  display: inline-block;
-  margin:2em;
-  margin-top:10em;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+.logo {
+  max-width: 100px;
+  margin: 0.5em;
 }
 
 #tab {
