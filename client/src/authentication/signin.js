@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthHelperMethods from "../helpers/AuthHelperMethods";
+import Logo from "../images/nsld-long.png"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -54,20 +55,22 @@ class signin extends Component {
 
     return (
       <div className="container">
+        <img src={Logo} alt={"Never Skip Leg Day"} className="fp-logo" />
         <div className="signin card">
           <Modal
-            className="modal"
+            className="si-modal"
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
           >
-            <Typography paragraph="true">
+            <Typography paragraph="true" style={{margin:5}}>
             It seems something went wrong... <br/>
             Please check your email and password and try again!
             </Typography>
-            <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
+            <Button id="button" variant="contained" color="primary" onClick={event => this.closeModal(event)}>
               OK
             </Button>
           </Modal>
+          
           <Typography variant="h6">Sign In</Typography>
           <TextField
             required
@@ -84,7 +87,7 @@ class signin extends Component {
             onChange={this._handleChange("password")}
             style={tstyles}
           /><br/>
-          <Button id="button" variant="contained" onClick={event => this._handleFormSubmit(event)}>
+          <Button id="button" variant="contained" color="primary" onClick={event => this._handleFormSubmit(event)}>
             Sign In
           </Button>
           <div>

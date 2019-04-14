@@ -3,16 +3,42 @@
   padding: 1em;
 }
 
+.fp-logo {
+  max-width: 250px;
+  padding: 1em;
+}
+
 .signup {
   text-align: center;
   padding: 1em;
 }
 
-.modal {
+.si-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
   text-align: center;
-  margin: 5em;
-  padding: 1em;
-  outline:none;
+  width: 250px;
+  height: 150px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -125px;
+  margin-top: -75px;
+}
+
+.su-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -125px;
+  margin-top: -125px;
 }
 
 #button {
@@ -23,7 +49,9 @@
   background-color: #F2F2F2;
   border-radius: .5em;
   display: inline-block;
-  margin:3em;
+  margin-left:3em;
+  margin-right:3em;
+  margin-bottom: 2em;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -31,4 +59,5 @@
   text-align: center;
   background:#2196f3;
   height: 100%;
+  overflow-y: scroll;
 }

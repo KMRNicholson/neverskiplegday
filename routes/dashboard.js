@@ -127,8 +127,6 @@ router.put('/workout', [
   check('workoutId', 'No workout id was provided.').exists(),
   check('name', 'Invalid name.').isLength({min:1, max:30}),
   check('description', 'Description is too long.').isLength({max:255}),
-  check('exercises', 'No exercises were provided.').exists(),
-  check('day', 'Day was not chosen').exists()
 ], (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){
@@ -139,13 +137,21 @@ router.put('/workout', [
       return res.status(422).send({ error: err.array() });
     }
 
-    const { workoutId, name, description } = request.body;
-    workouts.editWorkout(workoutId, name, description, (err, workoutId)=>{
+    const { workoutId, name, description, exercises } = request.body;
+    workouts.editWorkout(workoutId, name, description, (err)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
         message: "Server error! Failed to update workout."
       });
-      res.status(200).send();
+      if(exercises.length>0){
+        workouts.createWorkoutExercise(workoutId, exercises, (err) => {
+          if(err) return res.status(500).send({ 
+            error: err.code,
+            message: "Server error! Failed to create workout exercise."
+          });
+          res.status(200).send();
+        });
+      }
     });
   }
 });
@@ -187,7 +193,7 @@ router.delete('/workout', [
     if(!err.isEmpty()){
       return res.status(422).send({ error: err.array() });
     }
-    const { workoutId, exercise } = request.body;
+    const { workoutId } = request.body;
     workouts.deleteWorkoutExercises(workoutId, (err)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
