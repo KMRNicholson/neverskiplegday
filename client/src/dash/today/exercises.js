@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types, react/jsx-handler-names */
-import HttpHelperMethods from '../helpers/HttpHelperMethods';
+import HttpHelperMethods from '../../helpers/HttpHelperMethods';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';

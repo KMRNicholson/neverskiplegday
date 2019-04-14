@@ -6,13 +6,11 @@ import Button from "@material-ui/core/Button";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import withAuth from '../helpers/withAuth';
-import Today from '@material-ui/icons/CalendarToday';
+import TodayIcon from '@material-ui/icons/CalendarToday';
 import Week from '@material-ui/icons/CalendarViewDay';
 import User from '@material-ui/icons/AccountCircle';
-import Workout from './today'
+import Today from './today/today'
 import './dash.css';
 
 const weekdays = [
@@ -48,7 +46,7 @@ class dash extends Component {
     var day = weekdays[new Date().getDay()];
     switch(value){
       case 0:
-        comp.push(<Workout key="today" parent={this} day={day}></Workout>)
+        comp.push(<Today key="today" parent={this} day={day}></Today>)
         break;
       case 1:
         comp.push("Item 2")
@@ -72,7 +70,7 @@ class dash extends Component {
     return new HttpHelperMethods().get(route+"/workouts")
     .then(res => {
       var component = []
-      component.push(<Workout key="today" parent={this} day={day}></Workout>)
+      component.push(<Today key="today" parent={this} day={day}></Today>)
       this.setState({value:0, component:component, workouts:res.data.workouts});
       return Promise.resolve(res);
     });
@@ -90,7 +88,7 @@ class dash extends Component {
           <AppBar position="static" color="primary">
             <img src={Logo} alt={"Never Skip Leg Day"} className="logo" />
           <Tabs value={this.state.value} onChange={this._handleChange}>
-            <Tab id="tab" icon={<Today/>} />
+            <Tab id="tab" icon={<TodayIcon/>} />
             <Tab id="tab" label={<Week/>} />
             <Tab id="tab" label={<User/>} />
           </Tabs>

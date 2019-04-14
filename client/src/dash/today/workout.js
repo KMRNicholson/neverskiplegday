@@ -1,27 +1,19 @@
 import React, { Component } from "react";
-import "./dash.css";
 import { Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Exercises from "./exercises";
-import HttpHelperMethods from "../helpers/HttpHelperMethods";
+import HttpHelperMethods from "../../helpers/HttpHelperMethods";
 
 const route = "/dashboard";
 
-class newWorkout extends Component {
+class workout extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       desc: "",
       day: "",
-      exerciseId: "",
-      exerciseName: "",
-      reps: "N/A",
-      sets: "N/A",
-      weight: "N/A",
-      id:'',
-      minutes: "",
-      type: "",
+      id: "",
       mode:"Submit",
       exercises: [],
       existExercArray: [],
@@ -40,16 +32,14 @@ class newWorkout extends Component {
     var newExercArray = [...this.state.newExercArray, ...newExercise];
     var exercises = [];
     var i = 0;
-    newExercArray.find(function(exercise) {
+    newExercArray.forEach(exercise => {
       exercises.push(
         <div className="ex-info" key={"exercise" + i++}>
           <br /> {exercise.name} <br />
           Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight}
         </div>
-      );
-      return null;
+      )
     });
-    console.log(newExercArray)
     this.setState({ newExercises: exercises, newExercArray: newExercArray });
   };
 
@@ -78,7 +68,7 @@ class newWorkout extends Component {
         name: comp.state.name,
         description: comp.state.description,
         exercises: comp.state.newExercArray,
-        workoutId: this.state.id
+        workoutId: comp.state.id
       };
       return new HttpHelperMethods()
       .put(route + "/workout", payload)
@@ -91,9 +81,7 @@ class newWorkout extends Component {
   };
 
   componentDidMount(){
-    if(this.props.parent.state.name === "No workout today"){
-    }else{
-      console.log(this.props.parent.state)
+    if(this.props.parent.state.name !== "No workout today"){
       var workout = this.props.parent.state
       var exercises = []
       var existExercArray = []
@@ -150,4 +138,4 @@ class newWorkout extends Component {
   }
 }
 
-export default newWorkout;
+export default workout;
