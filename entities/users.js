@@ -22,25 +22,16 @@ const deleteUserById = (id, callback) => {
   return entities.findEntityById(id, table, callback);
 }
 
-/*const updateUser = (request, response) => {
-  const id = parseInt(request.params.id)
-  const { email, password, first_name, last_name } = request.body
-
-  pool.query(
-    'UPDATE users SET email = $1 WHERE id = $5',
-    [email, password, first_name, last_name, id],
-    (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    }
-  )
-}*/
+const updateUserById = (user, callback) => {
+  return pool.query('UPDATE users SET email = $2, first_name = $3, last_name = $4, weight = $5 WHERE id = $1', user, (err) => {
+    callback(err);
+  });
+}
 
 module.exports = {
   createUser,
   findUserByEmail,
   findUserById,
+  updateUserById,
   deleteUserById
 }

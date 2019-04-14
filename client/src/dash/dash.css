@@ -28,6 +28,17 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
+.user-card {
+  text-align: center;
+  padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:10em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
 .weekday {
   height:100%;
   width: 100%;

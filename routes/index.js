@@ -4,7 +4,7 @@ const jwt_service = require('../utils/jwt_service');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
 
-router.get('/user', (request, res) => {
+router.get('/dashboard/user', (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""), request.headers);
   if(!user){
     res.status(401).send("Unauthorized");
@@ -12,7 +12,8 @@ router.get('/user', (request, res) => {
     users.findUserById(user.id, (err, user) =>{
       if(err) return res.status(500).send("Server error! Failed to find user.");
       if(!user) return res.status(404).send("User not found.");
-      res.status(200).send({"user": user});
+      user.password = '';
+      res.status(200).send(user);
     })
   }
 })
@@ -79,5 +80,27 @@ router.post('/signin',[
     res.status(200).send({ "user":  user, "access_token":  accessToken, "expires_in":  expiresIn});
   });
 });
+
+router.put('/dashboard/user',[
+  check('email', 'Invalid email.').isEmail(),
+  check('firstname', 'Invalid first name.').isLength({min:1, max:30}),
+  check('lastname', 'Invalid last name.').isLength({min:1, max:30}),
+  check('weight', 'Invalid weight').isLength({min:0, max:10})], 
+(request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""), request.headers);
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){ 
+      return res.status(422).send({ error: err.array() });
+    }
+    users.updateUserById([user.id, email, firstname, lastname, weight], (err) =>{
+      if(err) return res.status(500).send("Server error! Failed to update user.");
+      if(!user) return res.status(404).send("User not found.");
+      res.status(200).send();
+    })
+  }
+})
 
 module.exports = router;

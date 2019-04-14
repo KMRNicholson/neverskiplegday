@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AuthHelperMethods from '../helpers/AuthHelperMethods';
 import HttpHelperMethods from '../helpers/HttpHelperMethods';
 import Logo from '../images/nsld-short.png';
+import User from './user/user';
 import Button from "@material-ui/core/Button";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -9,7 +10,7 @@ import Tab from '@material-ui/core/Tab';
 import withAuth from '../helpers/withAuth';
 import TodayIcon from '@material-ui/icons/CalendarToday';
 import WeekIcon from '@material-ui/icons/CalendarViewDay';
-import User from '@material-ui/icons/AccountCircle';
+import UserIcon from '@material-ui/icons/AccountCircle';
 import Today from './today/today'
 import Week from './week/week'
 import './dash.css';
@@ -43,7 +44,7 @@ class dash extends Component {
     this.auth = new AuthHelperMethods();
   }
 
-  _handleLogout(){
+  _handleLogout=()=>{
     this.auth.logout()
     this.props.history.replace('/signin');
   }
@@ -60,10 +61,7 @@ class dash extends Component {
         comp.push(<Week key={"week"} parent={this}/>)
         break;
       case 2:
-        comp.push(
-        <Button key="logout" variant="contained" onClick={event => this._handleLogout()}>
-          Sign Out
-        </Button>)
+        comp.push(<User key={"user"} parent={this} />)
         break;
       default:
         comp.push("Error")
@@ -86,10 +84,7 @@ class dash extends Component {
           comp.push(<Week key={"week"} parent={this}/>)
           break;
         case 2:
-          comp.push(
-          <Button key="logout" variant="contained" onClick={event => this._handleLogout()}>
-            Sign Out
-          </Button>)
+          comp.push(<User key={"user"} parent={this} />)
           break;
         default:
           comp.push(<Today key={"today"} parent={this} className={"today"} day={day}/>)
@@ -109,7 +104,7 @@ class dash extends Component {
           <Tabs value={this.state.value} onChange={this._handleChange}>
             <Tab id="tab" icon={<TodayIcon/>} />
             <Tab id="tab" icon={<WeekIcon/>} />
-            <Tab id="tab" label={<User/>} />
+            <Tab id="tab" label={<UserIcon/>} />
           </Tabs>
         </AppBar>
       </div>
