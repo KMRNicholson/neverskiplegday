@@ -41,7 +41,7 @@ const findWorkoutExercises = (workoutId, callback) => {
 
 const findWorkoutByUserId = (userId, callback) => {
   return pool.query(
-    "SELECT workout_id, w.name as workout, description, d.name as day, ex.id as exercise_id, ex.name as exercise, reps, sets, weight, minutes, type  FROM workouts AS w JOIN workout_exercises we ON we.workout_id = w.id JOIN exercises ex ON ex.id = we.exercises_id JOIN day d ON d.id = w.day_id WHERE user_id = $1", 
+    "SELECT w.id as workout_id, w.name as workout, description, d.name as day, ex.id as exercise_id, ex.name as exercise, reps, sets, weight, minutes, type, log  FROM workouts AS w JOIN day d ON d.id = w.day_id LEFT JOIN workout_exercises we ON we.workout_id = w.id LEFT OUTER JOIN exercises ex ON ex.id = we.exercises_id WHERE user_id = $1", 
     [userId], 
     (err, results) => {
       callback(err, results.rows);
