@@ -13,18 +13,18 @@ const createWorkout = (workout, callback) => {
 
 const createWorkoutExercise = (workoutId, exercises, callback) => {
   var values = ""
-  exercises.forEach(function(ex) {
+  exercises.forEach(ex => {
     const exerciseId = ex.id;
     const reps = ex.reps;
     const sets = ex.sets;
     const weight = ex.weight;
     const minutes = ex.minutes;
-    values += `(${workoutId}, ${exerciseId}, ${reps}, ${sets}, ${weight}, ${minutes}),`;
+    values += `(${workoutId}, ${exerciseId}, ${reps}, ${sets}, ${weight}, ${minutes}, ''),`;
   })
   return pool.query(
-    "INSERT INTO workout_exercises (workout_id, exercises_id, reps, sets, weight, minutes) VALUES " + values.slice(0,-1),
-    (err) => {
-      callback(err);
+    "INSERT INTO workout_exercises (workout_id, exercises_id, reps, sets, weight, minutes, log) VALUES " + values.slice(0,-1) + `RETURNING ${workoutId} AS w_id`,
+    (err, result) => {
+      callback(err, result.rows[0]);
     }
   )
 }
