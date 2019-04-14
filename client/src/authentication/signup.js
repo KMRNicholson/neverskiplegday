@@ -72,18 +72,18 @@ class signup extends Component {
         <img src={Logo} alt={"Never Skip Leg Day"} className="fp-logo" />
         <div className="signup card">
           <Modal
-            className="modal"
+            className="su-modal"
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
           >
-            <Typography paragraph="true">
+            <Typography paragraph="true" style={{margin:5}}>
             It seems something went wrong...<br/> 
             Please make sure all fields are filled in correctly and try again!. <br/><br/>
             Password Requirements: <br/>
             - minimum 6 characters long <br/>
             - must be alphanumeric (includes letters and numbers)
             </Typography>
-            <Button id="button" variant="contained" onClick={event => this.closeModal(event)}>
+            <Button id="button" variant="contained" color="primary" onClick={event => this.closeModal(event)}>
               OK
             </Button>
           </Modal>
@@ -125,7 +125,7 @@ class signup extends Component {
             onChange={this._handleChange("passConfirm")}
             style={tstyles}
           /><br/>
-          <Button id="button" variant="contained" onClick={event => this._handleFormSubmit(event)}>
+          <Button id="button" variant="contained" color="primary" onClick={event => this._handleFormSubmit(event)}>
             Sign Up
           </Button>
           <div>

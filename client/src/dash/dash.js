@@ -67,15 +67,12 @@ class dash extends Component {
   };
 
   componentDidMount = () => {
-    console.log("NOT LETTING ME DO THIS")
     this.setState({component:[]});
     var day = weekdays[new Date().getDay()];
     return new HttpHelperMethods().get(route+"/workouts")
     .then(res => {
       var component = []
       component.push(<Workout key="today" parent={this} day={day}></Workout>)
-      console.log(component)
-      console.log(res.data)
       this.setState({value:0, component:component, workouts:res.data.workouts});
       return Promise.resolve(res);
     });

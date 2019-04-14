@@ -13,11 +13,32 @@
   padding: 1em;
 }
 
-.modal {
+.si-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
   text-align: center;
-  margin: 5em;
-  padding: 1em;
-  outline:none;
+  width: 250px;
+  height: 150px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -125px;
+  margin-top: -75px;
+}
+
+.su-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  width: 250px;
+  height: 250px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -125px;
+  margin-top: -125px;
 }
 
 #button {
