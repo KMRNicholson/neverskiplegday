@@ -62,7 +62,6 @@ class user extends Component {
   componentDidMount(){
     new HttpHelperMethods().get(route+"/user")
     .then(res => {
-      console.log(res)
       var firstname = res.data.first_name;
       var lastname = res.data.last_name;
       var email = res.data.email;

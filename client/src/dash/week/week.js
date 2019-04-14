@@ -12,8 +12,6 @@ const weekdays = [
   "Saturday"
 ]
 
-const route = "/dashboard";
-
 class week extends Component {
   constructor(props){
     super(props);

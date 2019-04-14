@@ -3,7 +3,6 @@ import AuthHelperMethods from '../helpers/AuthHelperMethods';
 import HttpHelperMethods from '../helpers/HttpHelperMethods';
 import Logo from '../images/nsld-short.png';
 import User from './user/user';
-import Button from "@material-ui/core/Button";
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
