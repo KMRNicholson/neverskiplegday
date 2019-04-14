@@ -1,11 +1,56 @@
-.workout {
+.weekday-workout-card {
   text-align: left;
   padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:1em;
+  width:70%;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.today-workout-card {
+  width:70%;
+  text-align: left;
+  padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:9em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.day-card {
+  text-align: left;
+  width:100%;
+  background-color: #F2F2F2;
+  display: inline-block;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.user-card {
+  text-align: center;
+  padding: 1em;
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  display: inline-block;
+  margin:2em;
+  margin-top:3em;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.weekday {
+  height:100%;
+  width: 100%;
 }
 
 .dash {
   text-align: center;
   height:100%;
+  width: 100%;
+  position: relative;
 }
 
 .ex-info {
@@ -29,16 +74,54 @@
 
 .ReactModal__Overlay{
   overflow-y: scroll;
+  z-index: 2;
+}
+
+.today-app-bars {
+  position: absolute;
+  z-index: 1;
+  width:100%;
+}
+
+.log {
+  max-width: 8em;
+  margin-right: 2em;
+}
+
+.week-app-bars {
+  z-index: 1;
+  width:100%;
 }
 
 .today {
   height:100%;
+  width: 100%;
+  position: absolute;
 }
 
-#tooltip {
-  position:absolute;
-  bottom:0;
-  right:0;
+.week {
+  height:100%;
+  width: 100%;
+  position: absolute;
+}
+
+#today-tooltip {
+  float:right;
+  margin:1em;
+}
+
+#weekday-tooltip {
+  float:right;
+  margin:1em;
+}
+
+#today-tooltip-2 {
+  float:right;
+  margin:1em;
+}
+
+#weekday-tooltip-2 {
+  float:right;
   margin:1em;
 }
 
@@ -50,23 +133,30 @@
   padding:1em;
   margin:1em;
   overflow-y: scroll;
+  z-index: 1;
+}
+
+.confirm {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  width: 200px;
+  height: 125px;
+  position: absolute;
+  left: 50%;
+  top: 50%; 
+  margin-left: -100px;
+  margin-top: -75px;
 }
 
 .nw-work {
   overflow-y: scroll;
 }
 
-.t-container {
-  height:100%;
-  position: relative;
-}
-
-.card {
-  background-color: #F2F2F2;
-  border-radius: .5em;
-  display: inline-block;
-  margin:2em;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+.logo {
+  max-width: 100px;
+  margin: 0.5em;
 }
 
 #tab {

@@ -39,7 +39,7 @@ export default class HttpHelperMethods {
       headers
     })
       .then(response => { return response })
-      .catch(error => console.log(error));
+      .catch(error => { return error });
   }
 
   put(url, payload){
@@ -48,7 +48,7 @@ export default class HttpHelperMethods {
 
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
-    if (this.loggedIn()) {
+    if (new AuthHelperMethods().loggedIn()) {
       headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
@@ -56,7 +56,7 @@ export default class HttpHelperMethods {
       headers
     })
       .then(response => { return response })
-      .catch(error => console.log(error));
+      .catch(error => { return error });
   }
 
   delete(url, payload){
@@ -65,14 +65,15 @@ export default class HttpHelperMethods {
 
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
-    if (this.loggedIn()) {
+    if (new AuthHelperMethods().loggedIn()) {
       headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
     }
 
-    return axios.delete(this.domain+url, payload, {
-      headers
+    return axios.delete(this.domain+url, {
+      data:payload,
+      headers:headers
     })
       .then(response => { return response })
-      .catch(error => console.log(error));
+      .catch(error => {return error});
   }
 }

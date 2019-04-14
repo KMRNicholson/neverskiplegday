@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types, react/jsx-handler-names */
-import HttpHelperMethods from '../helpers/HttpHelperMethods';
+import HttpHelperMethods from '../../helpers/HttpHelperMethods';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
@@ -189,7 +189,12 @@ class exercises extends React.Component {
     });
   };
 
-  componentDidMount(){
+  addExercise(exercise){
+    this.props.parent.addExercise(exercise);
+    this.setState({exerciseInfo:[], exercise:null});
+  }
+
+  componentDidMount = () => {
     return new HttpHelperMethods().get(route+"/exercises")
     .then(res => {
       var exercises = res.data.map(exercise => ({
@@ -238,7 +243,7 @@ class exercises extends React.Component {
             <Button id="ei-button" 
               variant="contained" 
               color="primary"
-              onClick={event=>this.props.parent.addExercise([{
+              onClick={event=>this.addExercise([{
                 id:this.state.exercise.id,
                 name:this.state.exercise.label,
                 reps:this.state.reps,
@@ -307,7 +312,7 @@ class exercises extends React.Component {
         </NoSsr>
         {this.state.exerciseInfo}
         <Button id="button" variant="contained" color="primary" onClick={event => this.props.parent._handleFormSubmit(event)}>
-          Submit
+          {this.props.parent.state.mode}
         </Button>
         <Button id="button" variant="contained" onClick={event => this.props.parent.props.parent.closeModal()}>
           <CancelIcon/>
