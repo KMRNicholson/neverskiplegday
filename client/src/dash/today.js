@@ -26,6 +26,7 @@ class today extends Component {
       desc:"",
       day:"",
       exercises:[],
+      existExercises:[],
       tooltip:[],
       openModal: false,
       confirmDel: false
@@ -86,6 +87,7 @@ class today extends Component {
 
     var day = this.props.day;
     var exercises = [];
+    var existExercises = [];
     var tooltip = [];
     var workoutName;
     var desc;
@@ -100,6 +102,19 @@ class today extends Component {
         var reps=workout.reps
         var sets=workout.sets
         var weight=workout.weight
+        var minutes=workout.minutes
+        var exerciseId=workout.exercise_id
+        existExercises.push({
+          id:workoutId,
+          name:workoutName,
+          exerciseId:exerciseId,
+          exercise:name,
+          reps:reps,
+          sets:sets,
+          weight:weight,
+          minutes:minutes,
+          type:workout.type
+        })
         exercises.push(<Typography component={'span'} key={"exercise"+i++}>
           <br/> {name} <br/>
           Reps: {reps} Sets: {sets} Weight: {weight}
@@ -140,6 +155,7 @@ class today extends Component {
       day:day,
       desc:desc,
       exercises:exercises,
+      existExercises:existExercises,
       tooltip:tooltip
     })
   }

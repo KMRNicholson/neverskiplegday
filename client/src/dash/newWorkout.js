@@ -19,10 +19,14 @@ class newWorkout extends Component {
       reps: "N/A",
       sets: "N/A",
       weight: "N/A",
+      id:'',
       minutes: "",
       type: "",
+      mode:"Submit",
       exercises: [],
-      existExercises: []
+      existExercArray: [],
+      newExercises: [],
+      newExercArray: []
     };
   }
 
@@ -33,11 +37,10 @@ class newWorkout extends Component {
   };
 
   addExercise = newExercise => {
-    var newExercises = [...this.state.existExercises, ...newExercise];
-
+    var newExercArray = [...this.state.newExercArray, ...newExercise];
     var exercises = [];
     var i = 0;
-    newExercises.find(function(exercise) {
+    newExercArray.find(function(exercise) {
       exercises.push(
         <div className="ex-info" key={"exercise" + i++}>
           <br /> {exercise.name} <br />
@@ -46,38 +49,79 @@ class newWorkout extends Component {
       );
       return null;
     });
-    this.setState({ exercises: exercises, existExercises: newExercises });
+    console.log(newExercArray)
+    this.setState({ newExercises: exercises, newExercArray: newExercArray });
   };
 
   _handleFormSubmit = event => {
-    console.log("SEND POST");
-    console.log(this);
     var comp = this;
-    return new HttpHelperMethods()
+    if(this.state.mode === "Submit"){
+      return new HttpHelperMethods()
       .post(route + "/day", {name:comp.props.parent.state.day})
       .then(res => {
-        console.log(res)
         var payload = {
           name: comp.state.name,
           description: comp.state.description,
-          exercises: comp.state.existExercises,
+          exercises: comp.state.newExercArray,
           day: res.data.id
         };
-        console.log(payload);
         return new HttpHelperMethods()
           .post(route + "/workout", payload)
           .then(res => {
             comp.props.parent.closeModal();
+            comp.props.parent.pageRefresh();
             return Promise.resolve(res);
           });
       });
+    }else{
+      var payload = {
+        name: comp.state.name,
+        description: comp.state.description,
+        exercises: comp.state.newExercArray,
+        workoutId: this.state.id
+      };
+      return new HttpHelperMethods()
+      .put(route + "/workout", payload)
+      .then(res => {
+        comp.props.parent.closeModal();
+        comp.props.parent.pageRefresh();
+        return Promise.resolve(res);
+      });
+    }
   };
 
   componentDidMount(){
-    if(this.props.parent.state.workoutName === "No workout today."){
-      console.log("new");
+    if(this.props.parent.state.name === "No workout today"){
     }else{
-      console.log("edit");
+      console.log(this.props.parent.state)
+      var workout = this.props.parent.state
+      var exercises = []
+      var existExercArray = []
+      var i = 0;
+      this.props.parent.state.existExercises.forEach((exercise)=>{
+        existExercArray.push({
+          id:exercise.exerciseId,
+          name:exercise.exercise,
+          reps:exercise.reps,
+          sets:exercise.sets,
+          weight:exercise.weight,
+          minutes:exercise.minutes,
+          type:exercise.type
+        })
+        exercises.push(
+          <div className="ex-info" key={"exercise" + i++}>
+            <br /> {exercise.exercise} <br />
+            Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight}
+          </div>
+        );
+      })
+      this.setState({
+        id:workout.workoutId,
+        name:workout.name,
+        existExercArray:existExercArray,
+        exercises:exercises,
+        mode:"Save"
+      })
     }
   }
 
@@ -88,7 +132,7 @@ class newWorkout extends Component {
 
     return (
       <div className="nw-work">
-        <Typography variant="h6">New Workout</Typography>
+        <Typography variant="h6">Workout</Typography>
         <TextField
           fullWidth
           required
@@ -98,16 +142,8 @@ class newWorkout extends Component {
           style={tstyles}
         />
         <br />
-        <TextField
-          fullWidth
-          required
-          label="Description"
-          value={this.state.description}
-          onChange={this._handleChange("description")}
-          style={tstyles}
-        />
-        <br />
         {this.state.exercises}
+        {this.state.newExercises}
         <Exercises parent={this} className="exercise" />
       </div>
     );
