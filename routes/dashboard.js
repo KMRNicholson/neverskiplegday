@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const workouts = require('../entities/workouts');
-const exercises = require('../entities/exercises');
+const exercise = require('../entities/exercises');
 const days = require('../entities/days');
 const jwt_service = require('../utils/jwt_service');
 const { check, validationResult } = require('express-validator/check');
@@ -42,7 +42,7 @@ router.get('/exercises', (request, res) => {
   if(!user){
     res.status(401).send("Unauthorized");
   }else{
-    exercises.findAllExercises((err, results)=>{
+    exercise.findAllExercises((err, results)=>{
       if(err) return res.status(500).send({ 
         error: err.code,
         message: "Server error! Failed to get exercises."
@@ -67,7 +67,6 @@ router.post('/workout', [
     if(!err.isEmpty()){
       return res.status(422).send({ error: err.array() });
     }
-
     const { name, description, exercises, day } = request.body;
     if(exercises.length > 15){
       return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
@@ -77,12 +76,15 @@ router.post('/workout', [
         error: err.code,
         message: "Server error! Failed to create workout."
       });
-      workouts.createWorkoutExercise(results.rows[0].id, exercises, (err) => {
-        if(err) return res.status(500).send({ 
-          error: err.code,
-          message: "Server error! Failed to create workout exercise."
-        });
-        res.status(200).send({ message: "Workout succesfully created!" });
+      workouts.createWorkoutExercise(results.rows[0].id, exercises, (err, result) => {
+        if(err) {
+          workouts.deleteWorkoutById(result.w_id, () => {}); 
+          return res.status(500).send({
+            error: err.code,
+            message: "Server error! Failed to create workout exercise."
+          });
+        }
+        return res.status(200).send({ message: "Workout succesfully created!" });
       })
     });
   }
@@ -179,6 +181,30 @@ router.put('/workout/exercise', [
       });
     }
   }
+);
+
+router.put('/workout/exercise-log', [
+  check('log', 'Log is too long.').isLength({min:0, max:50}),
+  check('weId', 'Workout Exercises id required.').exists()
+], (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){
+      return res.status(422).send({ error: err.array() });
+    }
+    const { log, weId } = request.body;
+    workouts.updateLog(weId, log, (err)=>{
+      if(err) return res.status(500).send({ 
+        error: err.code,
+        message: "Server error! Failed to update exercise."
+      });
+      res.status(200).send();
+    });
+  }
+}
 );
 
 //Deletes a workout and the associated exercises

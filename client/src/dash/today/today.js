@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import EditIcon from '@material-ui/icons/Edit';
+import Log from './log';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
 import ConfirmModal from 'react-modal';
@@ -48,12 +49,6 @@ class today extends Component {
 
   pageRefresh = () => {
     window.location.reload();
-  }
-
-  _handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
   }
 
   _handleEdit = () => {
@@ -102,10 +97,13 @@ class today extends Component {
         var sets=workout.sets
         var weight=workout.weight
         var minutes=workout.minutes
+        var we_id=workout.we_id
         var exerciseId=workout.exercise_id
+        var log=workout.log
         existExercises.push({
           id:workoutId,
           name:workoutName,
+          we_id:we_id,
           exerciseId:exerciseId,
           exercise:name,
           reps:reps,
@@ -114,10 +112,11 @@ class today extends Component {
           minutes:minutes,
           type:workout.type
         })
-        exercises.push(<Typography component={'span'} key={"exercise"+i++}>
-          <br/> {name} <br/>
-          Reps: {reps} Sets: {sets} Weight: {weight}
-        </Typography>)
+        exercises.push(<div className={"ex"} key={"exercise"+i++}>
+            {name} <br/>
+            Reps: {reps} Sets: {sets} Weight: {weight}
+          <Log parent={this} weId={we_id} log={log} />
+        </div>)
       }
       return null; 
     });
@@ -184,12 +183,10 @@ class today extends Component {
           <Workout parent={this}/>
         </Modal>
         <div className={this.props.className+"-workout-card"}>
-          <Typography variant="h6">
+          <Typography style={{marginBottom:5}} variant="h6">
           {this.state.name}
           </Typography>
-          <Typography>
           {this.state.exercises}
-          </Typography> 
         </div>
         {this.state.tooltip}
       </div>
