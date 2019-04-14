@@ -39,7 +39,7 @@ export default class HttpHelperMethods {
       headers
     })
       .then(response => { return response })
-      .catch(error => console.log(error));
+      .catch(error => { return error });
   }
 
   put(url, payload){
@@ -56,7 +56,7 @@ export default class HttpHelperMethods {
       headers
     })
       .then(response => { return response })
-      .catch(error => console.log(error));
+      .catch(error => { return error });
   }
 
   delete(url, payload){

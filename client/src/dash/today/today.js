@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './dash.css';
 import { Typography } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
@@ -9,8 +8,8 @@ import Modal from 'react-modal';
 import ConfirmModal from 'react-modal';
 import AddIcon from '@material-ui/icons/Add';
 import DelIcon from '@material-ui/icons/Delete';
-import NewWorkout from './newWorkout'
-import HttpHelperMethods from "../helpers/HttpHelperMethods";
+import Workout from './workout'
+import HttpHelperMethods from "../../helpers/HttpHelperMethods";
 import CancelIcon from '@material-ui/icons/Cancel';
 
 const route = "/dashboard";
@@ -93,7 +92,7 @@ class today extends Component {
     var desc;
     var workoutId;
     var i = 1;
-    this.props.parent.state.workouts.find(function(workout){
+    this.props.parent.state.workouts.find(workout => {
       if(workout.day === day) {
         workoutName = workout.workout
         desc = workout.description
@@ -127,7 +126,7 @@ class today extends Component {
       workoutName = "No workout today"
       tooltip.push(<div key="add"  className="t-container">
           <Tooltip title="Add" aria-label="Add" onClick={event=>this._handleNew(event)}>
-            <Fab color="secondary" id="tooltip">
+            <Fab color="secondary" id={this.props.className + "-tooltip"}>
               <AddIcon />
             </Fab>
           </Tooltip>
@@ -136,12 +135,12 @@ class today extends Component {
     }else{
       tooltip.push(<div key="edit" className="t-container">
         <Tooltip title="Delete" aria-label="Delete" onClick={event=>this._confirmDelete(event)}>
-          <Fab id="tooltip">
+          <Fab id={this.props.className + "-tooltip"}>
             <DelIcon />
           </Fab>
         </Tooltip>
         <Tooltip title="Edit" aria-label="Edit" onClick={event=>this._handleEdit(event)}>
-          <Fab color="secondary" id="tooltip-2">
+          <Fab color="secondary" id={this.props.className + "-tooltip-2"}>
             <EditIcon />
           </Fab>
         </Tooltip>
@@ -162,7 +161,7 @@ class today extends Component {
 
   render() {
     return (
-      <div className="today">
+      <div className={this.props.className}>
         <ConfirmModal
           className="confirm"
           isOpen={this.state.confirmDel}
@@ -182,9 +181,9 @@ class today extends Component {
             isOpen={this.state.modalIsOpen}
             onRequestClose={this.closeModal}
           >
-          <NewWorkout parent={this}/>
+          <Workout parent={this}/>
         </Modal>
-        <div className="workout-card">
+        <div className={this.props.className+"-workout-card"}>
           <Typography variant="h6">
           {this.state.name}
           </Typography>

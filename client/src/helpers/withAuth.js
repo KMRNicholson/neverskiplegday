@@ -43,7 +43,6 @@ export default function withAuth(AuthComponent) {
             />
           );
         } else {
-          console.log("not confirmed!");
           return null;
         }
       } else {
