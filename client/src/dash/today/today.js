@@ -112,7 +112,7 @@ class today extends Component {
           minutes:minutes,
           type:workout.type
         })
-        exercises.push(<div key={"exercise"+i++}>
+        exercises.push(<div className={"ex"} key={"exercise"+i++}>
             {name} <br/>
             Reps: {reps} Sets: {sets} Weight: {weight}
           <Log parent={this} weId={we_id} log={log} />

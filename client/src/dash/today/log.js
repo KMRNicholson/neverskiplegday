@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
 import CheckIcon from '@material-ui/icons/Check';
 import Button from "@material-ui/core/Button";
+import HttpHelperMethods from "../../helpers/HttpHelperMethods";
+
+const route= "/dashboard"
 
 class log extends Component {
   constructor(props){
@@ -21,7 +24,18 @@ class log extends Component {
   }
 
   updateLog = () => {
-    console.log(this.state)
+    var payload = {
+      weId:this.state.weId,
+      log:this.state.log
+    }
+    return new HttpHelperMethods().put(route+"/workout/exercise-log", 
+    payload)
+    .then(res => {
+      this.setState({
+        disabled:true
+      })
+      return Promise.resolve(res);
+    })  
   }
 
   componentDidMount(){

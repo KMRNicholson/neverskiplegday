@@ -37,7 +37,7 @@
   border-radius: .5em;
   display: inline-block;
   margin:2em;
-  margin-top:10em;
+  margin-top:3em;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -106,9 +106,7 @@
 }
 
 #today-tooltip {
-  position:absolute;
-  bottom:0;
-  right:0;
+  float:right;
   margin:1em;
 }
 
@@ -118,9 +116,7 @@
 }
 
 #today-tooltip-2 {
-  position:absolute;
-  bottom:0;
-  right:5em;
+  float:right;
   margin:1em;
 }
 
