@@ -1,5 +1,4 @@
 const entities = require('./entities');
-const pool = require('../config/dbconfig').pool;
 const table = 'exercises';
 
 const findAllExercises = callback => {

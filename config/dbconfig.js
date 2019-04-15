@@ -12,6 +12,7 @@ const config = {
 const client = new pg.Client(config);
 
 function queryDatabase(query, callback){
+	console.log(query);
 	client.query(query)
 	.then(results => {
 		callback(200, results.rows);

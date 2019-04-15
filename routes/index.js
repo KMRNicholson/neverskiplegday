@@ -4,17 +4,6 @@ const days = require('../entities/days');
 const jwt_service = require('../utils/jwt_service');
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
-const pg = require('pg');
-require('dotenv').config();
-const config = {
-	user: process.env.PG_USER,
-	host: process.env.PG_HOST,
-	database: 'neverskiplegday',
-	password: process.env.PG_PASS,
-	port: process.env.PG_PORT,
-};
-const client = new pg.Client(config);
-client.connect();
 
 router.get('/', (request, res)=>{
   days.findAllDays((code, results)=>{
@@ -27,11 +16,12 @@ router.get('/dashboard/user', (request, res) => {
   if(!user){
     res.status(401).send("Unauthorized");
   }else{
-    users.findUserById(user.id, (err, user) =>{
-      if(err) return res.status(500).send("Server error! Failed to find user.");
+    users.findUserById(user.id, (code, results) =>{
+      if(code == 500) return res.status(code).send("Server error! Failed to find user.");
+      var user = results[0]
       if(!user) return res.status(404).send("User not found.");
       user.password = '';
-      res.status(200).send(user);
+      res.status(code).send(user);
     })
   }
 })
@@ -57,7 +47,7 @@ router.post('/signup', [
       message: "Server error! Failed to create user."
     });
     users.findUserByEmail(email, (code, user)=>{
-      if(code == 500) return res.status(500).send({ 
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to find user."
       });  
@@ -84,11 +74,12 @@ router.post('/signin',[
   const email = request.body.email;
   const password = request.body.password;
 
-  users.findUserByEmail(email, (err, user)=>{
-    if(err) return res.status(500).send({ 
+  users.findUserByEmail(email, (code, results)=>{
+    if(code == 500) return res.status(code).send({ 
       error: err.code,
       message: "Server error! Failed to find user."
     });
+    var user = results[0];
     if(!user) return res.status(401).send('Email/Password are invalid!');
     const result = bcrypt.compareSync(password, user.password);
     if(!result) return res.status(401).send('Email/Password are invalid!');
@@ -96,7 +87,7 @@ router.post('/signin',[
     const accessToken = jwt_service.sign({ id: user.id }, {
       expiresIn: expiresIn
     });
-    res.status(200).send({ "user":  user, "access_token":  accessToken, "expires_in":  expiresIn});
+    res.status(code).send({ "user":  user, "access_token":  accessToken, "expires_in":  expiresIn});
   });
 });
 
@@ -114,10 +105,11 @@ router.put('/dashboard/user',[
     if(!err.isEmpty()){ 
       return res.status(422).send({ error: err.array() });
     }
-    users.updateUserById([user.id, email, firstname, lastname, weight], (err) =>{
-      if(err) return res.status(500).send("Server error! Failed to update user.");
+    users.updateUserById([user.id, email, firstname, lastname, weight], (code, results) =>{
+      if(code) return res.status(code).send("Server error! Failed to update user.");
+      var user = results[0];
       if(!user) return res.status(404).send("User not found.");
-      res.status(200).send();
+      res.status(code).send(user);
     })
   }
 })

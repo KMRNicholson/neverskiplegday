@@ -3,18 +3,18 @@ const db = require('../config/dbconfig');
 
 module.exports = {
   findAllEntities: (table, callback) => {
-    return pool.query('SELECT * FROM ' + table, (err, results) => {
-      callback(err, results.rows);
-    })
+    db.query(`SELECT * FROM ${table};`,
+      callback
+  )
   },
   findEntityById: (id, table, callback) => {
-    return pool.query('SELECT * FROM ' + table + ' WHERE id = $1', [id], (err, results) => {
-      callback(err, results.rows[0]);
-    })
+    db.query(`SELECT * FROM ${table} WHERE id = ${id};`, 
+      callback
+    )
   },
   deleteEntityById: (id, table, callback) => {
-    return pool.query('DELETE FROM ' + table + ' WHERE id = $1', [id], (err) => {
-      callback(err)
-    })
+    db.query(`DELETE FROM ${table} WHERE id = ${id};`,
+      callback
+    )
   }
 }

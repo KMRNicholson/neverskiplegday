@@ -11,12 +11,12 @@ router.get('/workouts', (request, res) => {
   if(!user){
     res.status(401).send("Unauthorized");
   }else{
-    workouts.findWorkoutByUserId(user.id, (err, results)=>{
-      if(err) return res.status(500).send({ 
+    workouts.findWorkoutByUserId(user.id, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to create workout."
       });
-      res.status(200).send({ workouts: results });
+      res.status(code).send({ workouts: results });
     });
   }
 });
@@ -27,12 +27,13 @@ router.post("/day", (request, res) => {
     res.status(401).send("Unauthorized");
   }else{
     const {name} = request.body
-    days.findDayByName(name, (err, results)=>{
-      if(err) return res.status(500).send({ 
+    days.findDayByName(name, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to find day."
       });
-      res.status(200).send(results);
+      var day = results[0]
+      res.status(code).send(day);
     });
   }
 })
@@ -42,12 +43,12 @@ router.get('/exercises', (request, res) => {
   if(!user){
     res.status(401).send("Unauthorized");
   }else{
-    exercise.findAllExercises((err, results)=>{
-      if(err) return res.status(500).send({ 
+    exercise.findAllExercises((code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to get exercises."
       });
-      res.status(200).send(results);
+      res.status(code).send(results);
     });
   }
 });
@@ -71,26 +72,29 @@ router.post('/workout', [
     if(exercises.length > 15){
       return res.status(422).send({error:"Too many exercises. Maximum of 15 exercises per workout."})
     }
-    workouts.createWorkout([user.id, day, name, description], (err, results)=>{
-      if(err) return res.status(500).send({ 
+    workouts.createWorkout({userId:user.id, dayId:day, name:name, desc:description}, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to create workout."
       });
-      workouts.createWorkoutExercise(results.rows[0].id, exercises, (err, result) => {
-        if(err) {
+      var workoutId = results[0].id
+      workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
+        if(code == 500) {
+          var result = results[0];
           workouts.deleteWorkoutById(result.w_id, () => {}); 
-          return res.status(500).send({
+          return res.status(code).send({
             error: err.code,
             message: "Server error! Failed to create workout exercise."
           });
         }
-        return res.status(200).send({ message: "Workout succesfully created!" });
+        return res.status(code).send({ message: "Workout succesfully created!" });
       })
     });
   }
 });
 
 //Route for creating a workout exercise
+//THIS IS NOT BEING USED ATM.
 router.post('/workout/exercise', [
   check('exercises', 'Exercise required.').exists(),
   check('workoutId', 'Workout id required.').exists()
@@ -105,20 +109,20 @@ router.post('/workout/exercise', [
     }
 
     const { workoutId, exercises } = request.body;
-    workouts.findWorkoutExercises(workoutId, (err, results) => {
-      if(err) return res.status(500).send({ 
+    workouts.findWorkoutExercises(workoutId, (code, results) => {
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to find workout."
       });
-      if(results.length > 14) return res.status(422).send({ 
-        error: "Too many exercises. Maximum of 15 exercises per workout"
+      if(results.length > 9) return res.status(400).send({ 
+        error: "Too many exercises. Maximum of 10 exercises per workout"
       });
-      workouts.createWorkoutExercise(workoutId, exercises, (err) => {
-        if(err) return res.status(500).send({ 
+      workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
+        if(code == 500) return res.status(code).send({ 
           error: err.code,
           message: "Server error! Failed to create workout exercise."
         });
-        res.status(200).send();
+        res.status(code).send();
       });
     })
   }
@@ -140,18 +144,18 @@ router.put('/workout', [
     }
 
     const { workoutId, name, description, exercises } = request.body;
-    workouts.editWorkout(workoutId, name, description, (err)=>{
-      if(err) return res.status(500).send({ 
+    workouts.editWorkout(workoutId, name, description, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to update workout."
       });
       if(exercises.length>0){
-        workouts.createWorkoutExercise(workoutId, exercises, (err) => {
-          if(err) return res.status(500).send({ 
+        workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
+          if(code == 500) return res.status(code).send({ 
             error: err.code,
             message: "Server error! Failed to create workout exercise."
           });
-          res.status(200).send();
+          res.status(code).send();
         });
       }
     });
@@ -172,12 +176,12 @@ router.put('/workout/exercise', [
         return res.status(422).send({ error: err.array() });
       }
       const { workoutId, exercise } = request.body;
-      workouts.editWorkoutExercises(workoutId, exercise, (err)=>{
-        if(err) return res.status(500).send({ 
+      workouts.editWorkoutExercises(workoutId, exercise, (code, results)=>{
+        if(code == 500) return res.status(code).send({ 
           error: err.code,
           message: "Server error! Failed to update exercise."
         });
-        res.status(200).send();
+        res.status(code).send();
       });
     }
   }
@@ -196,12 +200,12 @@ router.put('/workout/exercise-log', [
       return res.status(422).send({ error: err.array() });
     }
     const { log, weId } = request.body;
-    workouts.updateLog(weId, log, (err)=>{
-      if(err) return res.status(500).send({ 
+    workouts.updateLog(weId, log, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to update exercise."
       });
-      res.status(200).send();
+      res.status(code).send();
     });
   }
 }
@@ -220,17 +224,17 @@ router.delete('/workout', [
       return res.status(422).send({ error: err.array() });
     }
     const { workoutId } = request.body;
-    workouts.deleteWorkoutExercises(workoutId, (err)=>{
-      if(err) return res.status(500).send({ 
+    workouts.deleteWorkoutExercises(workoutId, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to delete exercises."
       });
-      workouts.deleteWorkoutById(workoutId, (err)=>{
-        if(err) return res.status(500).send({ 
+      workouts.deleteWorkoutById(workoutId, (code, results)=>{
+        if(code == 500) return res.status(code).send({ 
           error: err.code,
           message: "Server error! Failed to delete workout."
         });
-        res.status(200).send();
+        res.status(code).send();
       })
     });
   }
@@ -250,12 +254,12 @@ router.delete('/workout/exercise', [
       return res.status(422).send({ error: err.array() });
     }
     const { workoutId, exerciseId } = request.body;
-    workouts.deleteWorkoutExercise(workoutId, exerciseId, (err)=>{
-      if(err) return res.status(500).send({ 
+    workouts.deleteWorkoutExercise(workoutId, exerciseId, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
         error: err.code,
         message: "Server error! Failed to delete exercises."
       });
-      res.status(200).send();
+      res.status(code).send();
     });
   }
 })

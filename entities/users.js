@@ -1,20 +1,17 @@
-const pool = require('../config/dbconfig').pool;
 const entities = require('./entities');
 const db = require('../config/dbconfig');
 const table = 'users';
 
-
-
 const createUser = (user, callback) => {
-  return pool.query('INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)', user, (err) => {
-    callback(err);
-  });
+  db.query(`
+    INSERT INTO users (email, password, first_name, last_name) 
+    VALUES (${user[0]}, ${user[1]}, ${user[2]}, ${user[3]});`,
+    callback
+  );
 }
 
 const findUserByEmail = (email, callback) => {
-  return pool.query('SELECT * FROM users WHERE email = $1', [email], (err, results) => {
-    callback(err, results.rows[0]);
-  })
+  db.query(`SELECT * FROM users WHERE email = ${email};`, callback)
 }
 
 const findUserById = (id, callback) => {
@@ -26,9 +23,15 @@ const deleteUserById = (id, callback) => {
 }
 
 const updateUserById = (user, callback) => {
-  return pool.query('UPDATE users SET email = $2, first_name = $3, last_name = $4, weight = $5 WHERE id = $1', user, (err) => {
-    callback(err);
-  });
+  db.query(`
+    UPDATE users 
+    SET email = ${user[1]}, 
+        first_name = ${user[2]}, 
+        last_name = ${user[3]}, 
+        weight = ${user[4]}, 
+        WHERE id = ${user[0]};`,
+    callback
+  );
 }
 
 module.exports = {
