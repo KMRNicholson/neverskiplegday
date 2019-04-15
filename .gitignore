@@ -1,5 +1,3 @@
 node_modules/
-config/dbconfig.js
-private.key
 public.key
 docker-compose.yml
