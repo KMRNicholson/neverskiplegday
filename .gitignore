@@ -1,3 +1,4 @@
 node_modules/
-public.key
 docker-compose.yml
+.env
+

@@ -1,4 +1,5 @@
 const pool = require('../config/dbconfig').pool;
+const db = require('../config/dbconfig');
 
 module.exports = {
   findAllEntities: (table, callback) => {

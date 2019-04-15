@@ -1,6 +1,9 @@
 const pool = require('../config/dbconfig').pool;
 const entities = require('./entities');
+const db = require('../config/dbconfig');
 const table = 'users';
+
+
 
 const createUser = (user, callback) => {
   return pool.query('INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)', user, (err) => {

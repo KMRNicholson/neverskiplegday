@@ -1,9 +1,14 @@
 const pool = require('../config/dbconfig').pool;
 const entities = require('./entities');
-const table = 'day';
+const db = require('../config/dbconfig');
+const table = 'days';
+
+const findAllDays = (callback) => {
+  db.query("select * from days", callback)
+}
 
 const findDayByName = (name, callback) => {
-  return pool.query('SELECT id FROM day WHERE name = $1', [name], (err, res) => {
+  return pool.query('SELECT id FROM days WHERE name = $1', [name], (err, res) => {
     callback(err, res.rows[0]);
   });
 }
@@ -13,6 +18,7 @@ const findDayById = (id, callback) => {
 }
 
 module.exports = {
+  findAllDays,
   findDayById,
   findDayByName
 }
