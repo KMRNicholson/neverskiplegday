@@ -55,7 +55,9 @@ class signin extends Component {
 
     return (
       <div className="container">
-        <img src={Logo} alt={"Never Skip Leg Day"} className="fp-logo" />
+        <div className="fp-logo">
+          <img src={Logo} alt={"Never Skip Leg Day"} style={{maxWidth:250}} />
+        </div>
         <div className="signin card">
           <Modal
             className="si-modal"

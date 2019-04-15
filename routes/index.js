@@ -41,16 +41,17 @@ router.post('/signup', [
   const { email, firstName, lastName } = request.body;
   const password = bcrypt.hashSync(request.body.password);
 
-  users.createUser([email.toLowerCase(), password, firstName, lastName], (code, err)=>{
+  users.createUser({email:email.toLowerCase(), pass:password, firstname:firstName, lastname:lastName}, (code, err)=>{
     if(code == 500) return res.status(code).send({ 
-      error: err.code,
+      
       message: "Server error! Failed to create user."
     });
-    users.findUserByEmail(email, (code, user)=>{
+    users.findUserByEmail(email, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to find user."
-      });  
+      });
+      var user = results[0];
       user.password = '';
       const expiresIn = 24 * 60 * 60;
       const accessToken = jwt_service.sign({ id: user.id }, {
@@ -76,7 +77,7 @@ router.post('/signin',[
 
   users.findUserByEmail(email, (code, results)=>{
     if(code == 500) return res.status(code).send({ 
-      error: err.code,
+      
       message: "Server error! Failed to find user."
     });
     var user = results[0];
@@ -105,7 +106,8 @@ router.put('/dashboard/user',[
     if(!err.isEmpty()){ 
       return res.status(422).send({ error: err.array() });
     }
-    users.updateUserById([user.id, email, firstname, lastname, weight], (code, results) =>{
+    const { email, firstname, lastname, weight } = request.body;
+    users.updateUserById({id:user.id, email:email.toLowerCase(), firstname:firstname, lastname:lastname, weight:weight}, (code, results) =>{
       if(code) return res.status(code).send("Server error! Failed to update user.");
       var user = results[0];
       if(!user) return res.status(404).send("User not found.");

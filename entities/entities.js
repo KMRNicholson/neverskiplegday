@@ -3,7 +3,12 @@ const db = require('../config/dbconfig');
 
 module.exports = {
   findAllEntities: (table, callback) => {
-    db.query(`SELECT * FROM ${table};`,
+    db.query(`select * from ${table};`,
+      callback
+  )
+  },
+  writetodb: (callback) => {
+    db.query(`select * from workouts;`,
       callback
   )
   },

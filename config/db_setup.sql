@@ -1,26 +1,36 @@
+DROP TABLE IF EXISTS workout_exercises;
+DROP TABLE IF EXISTS exercises;
+DROP TABLE IF EXISTS workouts;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS days;
+
 CREATE TABLE users(
   id serial primary key,
   email varchar(30) not null,
   password varchar(100) not null,
   first_name varchar(30) not null,
   last_name varchar(30) not null,
-  weight int);
+  weight int,
+  UNIQUE(email));
   
 CREATE TABLE days(
   id serial primary key,
-  name varchar(10));
+  name varchar(10),
+  UNIQUE(name));
   
 CREATE TABLE exercises(
   id serial primary key,
   name varchar(30),
-  type integer);
+  type integer,
+  UNIQUE(name));
   
 CREATE TABLE workouts(
   id serial primary key,
   users_id integer not null references users(id),
   days_id integer not null references days(id),
   name varchar(30) not null,
-  description varchar(255));
+  description varchar(255),
+  UNIQUE(users_id, days_id));
   
 CREATE TABLE workout_exercises(
   id serial primary key,
@@ -30,7 +40,7 @@ CREATE TABLE workout_exercises(
   sets integer,
   weight integer,
   minutes integer,
-  log varchar(50))
+  log varchar(50));
   
 INSERT INTO days(name) 
 VALUES ('Sunday'),

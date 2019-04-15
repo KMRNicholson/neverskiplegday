@@ -3,14 +3,14 @@ const db = require('../config/dbconfig');
 const table = 'days';
 
 const findAllDays = (callback) => {
-  entities.findAllEntities(table, callback)
+  entities.writetodb(callback)
 }
 
 const findDayByName = (name, callback) => {
   db.query(`
     SELECT id 
     FROM days 
-    WHERE name = ${name};`,
+    WHERE name = '${name}';`,
     callback
   );
 }

@@ -9,25 +9,25 @@ const config = {
 	port: process.env.PG_PORT,
 };
 
-const client = new pg.Client(config);
-
-function queryDatabase(query, callback){
-	console.log(query);
-	client.query(query)
-	.then(results => {
-		callback(200, results.rows);
-	})
-	.catch(err => {
-		callback(500, err);
-	});
-}
+const pool = new pg.Pool(config);
 
 module.exports = {
 	query: (query, callback) => {
-		client.connect(err => {
+		pool.connect((err, client, done) => {
 			if(err) callback(500, err);
 			else {
-				queryDatabase(query, callback)
+				console.log(query);
+				client.query(query, (err, results) =>{
+					done();
+
+					if(err){
+						console.log(err)
+						callback(500, err);
+					} 
+					else{
+						callback(200, results.rows);
+					}
+				})
 			}
 		});
 	},

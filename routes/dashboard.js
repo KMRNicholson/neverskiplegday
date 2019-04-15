@@ -13,7 +13,6 @@ router.get('/workouts', (request, res) => {
   }else{
     workouts.findWorkoutByUserId(user.id, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
         message: "Server error! Failed to create workout."
       });
       res.status(code).send({ workouts: results });
@@ -29,7 +28,6 @@ router.post("/day", (request, res) => {
     const {name} = request.body
     days.findDayByName(name, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
         message: "Server error! Failed to find day."
       });
       var day = results[0]
@@ -45,7 +43,6 @@ router.get('/exercises', (request, res) => {
   }else{
     exercise.findAllExercises((code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
         message: "Server error! Failed to get exercises."
       });
       res.status(code).send(results);
@@ -74,16 +71,16 @@ router.post('/workout', [
     }
     workouts.createWorkout({userId:user.id, dayId:day, name:name, desc:description}, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to create workout."
       });
       var workoutId = results[0].id
       workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
         if(code == 500) {
           var result = results[0];
-          workouts.deleteWorkoutById(result.w_id, () => {}); 
+          workouts.deleteWorkoutById(results.w_id, () => {}); 
           return res.status(code).send({
-            error: err.code,
+            
             message: "Server error! Failed to create workout exercise."
           });
         }
@@ -111,7 +108,7 @@ router.post('/workout/exercise', [
     const { workoutId, exercises } = request.body;
     workouts.findWorkoutExercises(workoutId, (code, results) => {
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to find workout."
       });
       if(results.length > 9) return res.status(400).send({ 
@@ -119,7 +116,7 @@ router.post('/workout/exercise', [
       });
       workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
         if(code == 500) return res.status(code).send({ 
-          error: err.code,
+          
           message: "Server error! Failed to create workout exercise."
         });
         res.status(code).send();
@@ -146,13 +143,13 @@ router.put('/workout', [
     const { workoutId, name, description, exercises } = request.body;
     workouts.editWorkout(workoutId, name, description, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to update workout."
       });
       if(exercises.length>0){
         workouts.createWorkoutExercise(workoutId, exercises, (code, results) => {
           if(code == 500) return res.status(code).send({ 
-            error: err.code,
+            
             message: "Server error! Failed to create workout exercise."
           });
           res.status(code).send();
@@ -178,7 +175,7 @@ router.put('/workout/exercise', [
       const { workoutId, exercise } = request.body;
       workouts.editWorkoutExercises(workoutId, exercise, (code, results)=>{
         if(code == 500) return res.status(code).send({ 
-          error: err.code,
+          
           message: "Server error! Failed to update exercise."
         });
         res.status(code).send();
@@ -202,7 +199,7 @@ router.put('/workout/exercise-log', [
     const { log, weId } = request.body;
     workouts.updateLog(weId, log, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to update exercise."
       });
       res.status(code).send();
@@ -226,12 +223,12 @@ router.delete('/workout', [
     const { workoutId } = request.body;
     workouts.deleteWorkoutExercises(workoutId, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to delete exercises."
       });
       workouts.deleteWorkoutById(workoutId, (code, results)=>{
         if(code == 500) return res.status(code).send({ 
-          error: err.code,
+          
           message: "Server error! Failed to delete workout."
         });
         res.status(code).send();
@@ -256,7 +253,7 @@ router.delete('/workout/exercise', [
     const { workoutId, exerciseId } = request.body;
     workouts.deleteWorkoutExercise(workoutId, exerciseId, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        error: err.code,
+        
         message: "Server error! Failed to delete exercises."
       });
       res.status(code).send();
