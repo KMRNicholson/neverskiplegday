@@ -77,7 +77,7 @@ router.post('/signin',[
   const email = request.body.email;
   const password = request.body.password;
 
-  users.findUserByEmail(email, (code, results)=>{
+  users.findUserByEmail(email.toLowerCase(), (code, results)=>{
     if(code == 500) return res.status(code).send({ 
       
       message: "Server error! Failed to find user."

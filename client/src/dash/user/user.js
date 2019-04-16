@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
+import Avatar from '../../images/avatar.png';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 Modal.setAppElement("#root");
@@ -124,6 +125,7 @@ class user extends Component {
               <CancelIcon/>
             </Button>
         </Modal>
+        <img src={Avatar} alt={"Avatar"} style={{width:275, height:275}} class="avatar" />
         <Typography variant="h6">
           {this.state.firstname + " " + this.state.lastname}
         </Typography>
@@ -133,11 +135,11 @@ class user extends Component {
         <Typography>
           Weight: {this.state.weight}
         </Typography>
-        <Button key="logout" variant="contained" onClick={event => this.props.parent._handleLogout()}>
+        <Button key="logout" variant="contained" id="logout-button" onClick={event => this.props.parent._handleLogout()}>
           Sign Out
         </Button>
         <Tooltip title="Edit" aria-label="Edit" onClick={event=>this.openModal(event)}>
-          <Fab color="secondary" id={this.props.className + "-tooltip-2"}>
+          <Fab color="secondary" id={"today-tooltip-2"}>
             <EditIcon />
           </Fab>
         </Tooltip>

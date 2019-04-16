@@ -7,6 +7,7 @@
   margin:2em;
   margin-top:1em;
   width:70%;
+  max-width: 300px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -19,6 +20,7 @@
   display: inline-block;
   margin:2em;
   margin-top:9em;
+  max-width: 300px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
@@ -31,7 +33,7 @@
 }
 
 .user-card {
-  text-align: center;
+  text-align: left;
   padding: 1em;
   background-color: #F2F2F2;
   border-radius: .5em;
@@ -44,6 +46,7 @@
 .weekday {
   height:100%;
   width: 100%;
+  text-align: center;
 }
 
 .dash {
@@ -123,6 +126,17 @@
 #weekday-tooltip-2 {
   float:right;
   margin:1em;
+}
+
+.avatar {
+  vertical-align: middle;
+  border-radius: 75%;
+}
+
+#logout-button {
+  float:left;
+  margin:1em;
+  margin-top:2em;
 }
 
 .nw-modal {
