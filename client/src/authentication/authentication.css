@@ -21,10 +21,10 @@
   background-color: #F2F2F2;
   border-radius: .5em;
   outline:0;
+  padding:1em;
   text-align: center;
   width: 250px;
   height: 150px;
-  position: absolute;
   left: 50%;
   top: 50%; 
   margin-left: -125px;
@@ -35,10 +35,10 @@
   background-color: #F2F2F2;
   border-radius: .5em;
   outline:0;
+  padding:1em;
   text-align: center;
   width: 250px;
   height: 250px;
-  position: absolute;
   left: 50%;
   top: 50%; 
   margin-left: -125px;
