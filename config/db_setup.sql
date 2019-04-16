@@ -96,3 +96,5 @@ VALUES ('Barbell Bench Press', 0),
   ('Biking', 1),
   ('Burpees', 1),
   ('Walk', 1);
+
+  SELECT * FROM exercises;

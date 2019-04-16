@@ -2,10 +2,11 @@ const router = require('express').Router();
 const users = require('../entities/users');
 const days = require('../entities/days');
 const jwt_service = require('../utils/jwt_service');
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
 
-router.get('/', (request, res)=>{
+router.get('/db', (request, res)=>{
   days.findAllDays((code, results)=>{
     res.status(code).send(results);
   });

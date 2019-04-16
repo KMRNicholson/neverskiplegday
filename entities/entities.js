@@ -1,4 +1,3 @@
-const pool = require('../config/dbconfig').pool;
 const db = require('../config/dbconfig');
 
 module.exports = {
@@ -8,7 +7,7 @@ module.exports = {
   )
   },
   writetodb: (callback) => {
-    db.query(`select * from workouts;`,
+    db.query(`SELECT * FROM exercises;`,
       callback
   )
   },
