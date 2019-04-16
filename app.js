@@ -1,12 +1,13 @@
 // Bring in our dependencies
 const app = require('express')();
+const cors = require('cors');
+app.use(cors());
+
 const index = require('./routes/index');
 const dashboard = require('./routes/dashboard');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const port = process.env.PORT || 3000;
 
-app.use(cors());
 
 app.use(bodyParser.json());
 
