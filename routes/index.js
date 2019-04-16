@@ -69,6 +69,7 @@ router.post('/signin',[
   check('password', 'Password must be alphanumeric, and 6 characters long.').matches(/^(?=.*\d)(?=.*[0-9])[0-9a-zA-Z]{6,}$/, "i"),
 ], (request, res) => {
   const err = validationResult(request);
+  console.log(request.body)
   if(!err.isEmpty()){
     return res.status(422).send({ error: err.array() });
   }
