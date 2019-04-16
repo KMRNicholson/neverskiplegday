@@ -42,6 +42,24 @@ export default class HttpHelperMethods {
       .catch(error => { return error });
   }
 
+  postImage(url, payload){
+    const headers = {
+      'content-type':'multipart/form-data'
+    };
+
+    // Setting Authorization header
+    // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
+    if (new AuthHelperMethods().loggedIn()) {
+      headers["Authorization"] = "Bearer " + new AuthHelperMethods().getToken();
+    }
+
+    return axios.post(this.domain+url, payload, {
+      headers
+    })
+      .then(response => { return response })
+      .catch(error => { return error });
+  }
+
   put(url, payload){
     // performs api calls sending the required authentication headers
     const headers = {};

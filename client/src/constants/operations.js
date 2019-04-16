@@ -1,1 +1,1 @@
-export const apiBaseUrl = 'https://nsld.neverskiplegday.ca/';
+export const apiBaseUrl = 'https://nsld.neverskiplegday.ca';
