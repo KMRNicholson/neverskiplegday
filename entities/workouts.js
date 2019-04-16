@@ -39,6 +39,15 @@ const findWorkoutExercises = (workoutId, callback) => {
   )
 }
 
+const findWorkoutExerciseLog = (weId, callback) => {
+  db.query(`
+    SELECT log 
+    FROM workout_exercises
+    WHERE id = ${weId};`,
+    callback
+  )
+}
+
 const findWorkoutByUserId = (userId, callback) => {
   db.query(`
     SELECT w.id AS workout_id, 
@@ -118,6 +127,7 @@ const deleteWorkoutById = (id, callback) => {
 module.exports = {
   createWorkout,
   createWorkoutExercise,
+  findWorkoutExerciseLog,
   findWorkoutExercises,
   findWorkoutByUserId,
   findWorkoutById,

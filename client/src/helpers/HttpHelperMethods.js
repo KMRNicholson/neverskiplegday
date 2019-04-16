@@ -8,7 +8,7 @@ export default class HttpHelperMethods {
     this.domain = domain || apiBaseUrl; // API server domain
   }
 
-  get(url){
+  get(url, payload){
     // performs api calls sending the required authentication headers
     const headers = {};
 
@@ -19,7 +19,8 @@ export default class HttpHelperMethods {
     }
 
     return axios.get(this.domain+url, {
-      headers
+      params:payload,
+      headers:headers
     })
       .then(response => { return response })
       .catch(error => { return error });

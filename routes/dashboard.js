@@ -20,6 +20,26 @@ router.get('/workouts', (request, res) => {
   }
 });
 
+router.get('/workout/exercise-log', [
+  check('weId', 'We_id required to fetch log.').exists()
+], (request, res) => {
+  const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
+  if(!user){
+    res.status(401).send("Unauthorized");
+  }else{
+    const err = validationResult(request);
+    if(!err.isEmpty()){
+      return res.status(422).send({ error: err.array() });
+    }
+    workouts.findWorkoutExerciseLog(request.query.weId, (code, results)=>{
+      if(code == 500) return res.status(code).send({ 
+        message: "Server error! Failed to create workout."
+      });
+      res.status(code).send(results);
+    });
+  }
+});
+
 router.post("/day", (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){

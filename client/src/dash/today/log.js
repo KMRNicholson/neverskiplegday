@@ -38,7 +38,20 @@ class log extends Component {
     })  
   }
 
+
+
   componentDidMount(){
+    var payload = {
+      weId:this.state.weId
+    }
+    return new HttpHelperMethods().get(route+"/workout/exercise-log", 
+    payload)
+    .then(res => {
+      this.setState({
+        log:res.data[0].log
+      })
+      return Promise.resolve(res);
+    })
   }
 
   render() {
