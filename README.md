@@ -15,3 +15,10 @@ If you decide to set up the application to connect to your own database, feel fr
 In order to start the application, run `npm install` in both the root directory, and the client directory. Then, in two separate terminals, run `npm start` in the client directory and also the root directory.
 
 That should be it for now!
+
+# Things that still need to be done:
+
+  - Edit workout exercise reps, sets, and weight after creation
+  - Upload avatar to user profile
+  - Add timer to the current workout tab
+  - Export workout history to CSV
