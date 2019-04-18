@@ -1,4 +1,4 @@
-# neverskiplegday
+# Never Skip Leg Day
 
 Personal project for keeping track of my workouts. The user will have the ability to register a user, log in and create workouts for each day of the week.
 
