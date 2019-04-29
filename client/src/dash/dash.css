@@ -171,6 +171,10 @@
   max-width: 250px;
 }
 
+#weinfo {
+  display: inline;
+}
+
 .confirm {
   background-color: #F2F2F2;
   border-radius: .5em;

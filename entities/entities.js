@@ -7,7 +7,7 @@ module.exports = {
   )
   },
   writetodb: (callback) => {
-    db.query(`SELECT * FROM exercises;`,
+    db.query(`SELECT * FROM days;`,
       callback
   )
   },

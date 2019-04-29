@@ -41,7 +41,6 @@ router.post('/signup', [
 
   const { email, firstName, lastName } = request.body;
   const password = bcrypt.hashSync(request.body.password);
-
   users.createUser({email:email.toLowerCase(), pass:password, firstname:firstName, lastname:lastName}, (code, err)=>{
     if(code == 500) return res.status(code).send({ 
       

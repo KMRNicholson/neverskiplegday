@@ -71,6 +71,10 @@ const findWorkoutById = (id, callback) => {
   return entities.findEntityById(id, table, callback);
 }
 
+const findWorkoutExerciseById = (id, callback) => {
+  return entities.findEntityById(id, "workout_exercises", callback);
+}
+
 const editWorkoutExercises = (workoutId, exercise, callback) => {
   db.query(`
     UPDATE workout_exercises 
@@ -131,6 +135,7 @@ module.exports = {
   findWorkoutExercises,
   findWorkoutByUserId,
   findWorkoutById,
+  findWorkoutExerciseById,
   editWorkoutExercises,
   editWorkout,
   updateLog,

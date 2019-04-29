@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Typography } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit';
 import Log from './log';
+import EditIcon from '@material-ui/icons/Edit';
+import Exercise from './exercise';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
 import ConfirmModal from 'react-modal';
@@ -113,8 +114,8 @@ class today extends Component {
           type:workout.type
         })
         exercises.push(<div className={"ex"} key={"exercise"+i++}>
-            {name} <br/>
-            Reps: {reps} Sets: {sets} Weight: {weight}
+            <div>{name} </div>
+          <Exercise parent={this} weId={we_id} reps={reps} weight={weight} sets={sets}/>
           <Log parent={this} weId={we_id} log={log} />
         </div>)
       }

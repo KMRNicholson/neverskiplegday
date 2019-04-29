@@ -1,8 +1,6 @@
 // Bring in our dependencies
 const app = require('express')();
 const cors = require('cors');
-app.use(cors());
-
 const index = require('./routes/index');
 const dashboard = require('./routes/dashboard');
 const bodyParser = require('body-parser');
@@ -12,6 +10,8 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors());
 
 //  Connect all our routes to our application
 app.use('/', index);
