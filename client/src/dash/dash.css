@@ -85,6 +85,7 @@
 
 .ReactModal__Overlay{
   z-index: 2;
+  overflow-y: scroll;
 }
 
 .today-app-bars {
