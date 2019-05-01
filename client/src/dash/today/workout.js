@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, Button }  from "@material-ui/core";
+import { Typography }  from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Exercises from "./exercises";
 import HttpHelperMethods from "../../helpers/HttpHelperMethods";
@@ -36,7 +36,7 @@ class workout extends Component {
       exercises.push(
         <div className="ex-info" key={"exercise" + i++}>
           <br /> {exercise.name} <br />
-          Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight} HAHA
+          Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight}
         </div>
       )
     });
@@ -99,7 +99,7 @@ class workout extends Component {
         exercises.push(
           <div className="ex-info" key={"exercise" + i++}>
             <br /> {exercise.exercise} <br />
-            Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight} <Button />
+            Reps: {exercise.reps} Sets: {exercise.sets} Weight: {exercise.weight}
           </div>
         );
       })

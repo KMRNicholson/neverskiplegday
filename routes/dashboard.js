@@ -199,33 +199,7 @@ router.put('/workout', [
   }
 });
 
-//Route for editing a workout exercise
 router.put('/workout/exercise', [
-    check('exercise', 'No exercise was provided.').exists(), 
-    check('workoutId', 'No workout id was provided.').exists()
-  ], (request, res) => {
-    const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
-    if(!user){
-      res.status(401).send("Unauthorized");
-    }else{
-      const err = validationResult(request);
-      if(!err.isEmpty()){
-        return res.status(422).send({ error: err.array() });
-      }
-      const { workoutId, exercise } = request.body;
-      workouts.editWorkoutExercises(workoutId, exercise, (code, results)=>{
-        if(code == 500) return res.status(code).send({ 
-          
-          message: "Server error! Failed to update exercise."
-        });
-        res.status(code).send();
-      });
-    }
-  }
-);
-
-router.put('/workout/exercise-log', [
-  check('log', 'Log is too long.').isLength({min:0, max:50}),
   check('weId', 'Workout Exercises id required.').exists()
 ], (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
@@ -236,10 +210,9 @@ router.put('/workout/exercise-log', [
     if(!err.isEmpty()){
       return res.status(422).send({ error: err.array() });
     }
-    const { log, weId } = request.body;
-    workouts.updateLog(weId, log, (code, results)=>{
+    const { reps, sets, weight, log, weId } = request.body;
+    workouts.editWorkoutExercises(weId, reps, sets, weight, log, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
-        
         message: "Server error! Failed to update exercise."
       });
       res.status(code).send();
@@ -279,8 +252,7 @@ router.delete('/workout', [
 
 //Deletes an exercise from a workout
 router.delete('/workout/exercise', [
-  check('workoutId', 'Workout id required.').exists(),
-  check('exerciseId', 'Exercise id required.').exists()
+  check('weId', 'Workout Exercises id required.').exists()
 ], (request, res) => {
   const user = jwt_service.verify(request.headers.authorization.replace("Bearer ", ""));
   if(!user){
@@ -290,8 +262,8 @@ router.delete('/workout/exercise', [
     if(!err.isEmpty()){
       return res.status(422).send({ error: err.array() });
     }
-    const { workoutId, exerciseId } = request.body;
-    workouts.deleteWorkoutExercise(workoutId, exerciseId, (code, results)=>{
+    const { weId } = request.body;
+    workouts.deleteWorkoutExercise(weId, (code, results)=>{
       if(code == 500) return res.status(code).send({ 
         
         message: "Server error! Failed to delete exercises."

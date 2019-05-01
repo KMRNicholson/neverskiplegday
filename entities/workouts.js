@@ -75,16 +75,14 @@ const findWorkoutExerciseById = (id, callback) => {
   return entities.findEntityById(id, "workout_exercises", callback);
 }
 
-const editWorkoutExercises = (workoutId, exercise, callback) => {
+const editWorkoutExercises = (weId, reps, sets, weight, log, callback) => {
   db.query(`
     UPDATE workout_exercises 
-    SET exercises_id = ${exercise.newId}, 
-      reps = ${exercise.reps}, 
-      sets = ${exercise.sets}, 
-      weight = ${exercise.weight}, 
-      minutes = ${exercise.minutes} 
-    WHERE workouts_id = ${workoutId} 
-      AND exercises_id = ${exercise.oldId};`,
+    SET reps = ${reps}, 
+      sets = ${sets}, 
+      weight = ${weight},
+      log = '${log}'
+    WHERE id = ${weId};`,
       callback
   )
 }
@@ -98,15 +96,6 @@ const editWorkout = (workoutId, name, description, callback) => {
   )
 }
 
-const updateLog = (weId, log, callback) => {
-  db.query(`
-    UPDATE workout_exercises 
-    SET log = '${log}'
-    WHERE id = ${weId};`, 
-    callback
-  )
-}
-
 const deleteWorkoutExercises = (workoutId, callback) => {
   db.query(`
     DELETE FROM workout_exercises 
@@ -115,11 +104,10 @@ const deleteWorkoutExercises = (workoutId, callback) => {
   );
 }
 
-const deleteWorkoutExercise = (workoutId, exerciseId, callback) => {
+const deleteWorkoutExercise = (weId, callback) => {
   db.query(`
     DELETE FROM workout_exercises 
-    WHERE workouts_id = ${workoutId} 
-      AND exercises_id = ${exerciseId};`,
+    WHERE id = ${weId};`,
     callback 
   )
 }
@@ -138,7 +126,6 @@ module.exports = {
   findWorkoutExerciseById,
   editWorkoutExercises,
   editWorkout,
-  updateLog,
   deleteWorkoutExercises,
   deleteWorkoutExercise,
   deleteWorkoutById

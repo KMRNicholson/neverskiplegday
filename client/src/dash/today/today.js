@@ -4,7 +4,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from "@material-ui/core/Button";
 import Log from './log';
 import EditIcon from '@material-ui/icons/Edit';
-import Exercise from './exercise';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
 import ConfirmModal from 'react-modal';
@@ -30,7 +29,8 @@ class today extends Component {
       existExercises:[],
       tooltip:[],
       openModal: false,
-      confirmDel: false
+      confirmDel: false,
+      button:[]
     }
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -69,6 +69,13 @@ class today extends Component {
   _handleNew = () => {
     this.openModal()
   };
+
+  enableButton = () => {
+    this.setState({
+      disabled:false
+    })
+    console.log(this.state.disabled)
+  }
 
   componentDidMount = () =>{
     this.setState({
@@ -114,9 +121,9 @@ class today extends Component {
           type:workout.type
         })
         exercises.push(<div className={"ex"} key={"exercise"+i++}>
-            <div>{name} </div>
-          <Exercise parent={this} weId={we_id} reps={reps} weight={weight} sets={sets}/>
-          <Log parent={this} weId={we_id} log={log} />
+            <div className="mg-small">{name} </div>
+          <Log parent={this} weId={we_id} log={log} reps={reps} sets={sets} weight={weight} />
+          
         </div>)
       }
       return null; 
@@ -147,6 +154,9 @@ class today extends Component {
       </div>
       )
     }
+
+    var button = []
+    button.push(<Button />)
 
     this.setState({
       workoutId:workoutId,
