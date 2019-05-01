@@ -18,7 +18,6 @@ That should be it for now!
 
 # Things that still need to be done:
 
-  - Edit workout exercise reps, sets, and weight after creation
   - Upload avatar to user profile
   - Add timer to the current workout tab
   - Export workout history to CSV
