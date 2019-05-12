@@ -12,7 +12,6 @@ import AddIcon from '@material-ui/icons/Add';
 import DelIcon from '@material-ui/icons/Delete';
 import SwapIcon from '@material-ui/icons/SwapVert';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Workout from './workout'
 import HttpHelperMethods from "../../helpers/HttpHelperMethods";
