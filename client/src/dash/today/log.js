@@ -94,14 +94,6 @@ class log extends Component {
 			maxWidth: 40,
 			margin:2 
     };
-    const button = {
-      float:"right", 
-      maxWidth: 30, 
-      maxHeight: 30, 
-      minWidth: 30, 
-      minHeight: 30,
-      margin: 5
-    }
     return (
       <div>
         <ConfirmModal
@@ -148,7 +140,7 @@ class log extends Component {
           size="small"
           onClick={event=>this._confirmDelete(event)}
           variant="contained"
-          style={button}>
+          id="sm-button">
           <DelIcon />
         </Button>
         <Button 
@@ -157,7 +149,7 @@ class log extends Component {
           onClick={event=>this.editExercise(event)}
           variant="contained"
           color="primary"
-          style={button}>
+          id="sm-button">
           <CheckIcon />
         </Button>
       </div>

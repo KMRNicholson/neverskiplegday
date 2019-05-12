@@ -7,8 +7,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import Modal from 'react-modal';
 import ConfirmModal from 'react-modal';
+import SwapModal from 'react-modal';
 import AddIcon from '@material-ui/icons/Add';
 import DelIcon from '@material-ui/icons/Delete';
+import SwapIcon from '@material-ui/icons/SwapVert';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Workout from './workout'
 import HttpHelperMethods from "../../helpers/HttpHelperMethods";
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -17,6 +22,7 @@ const route = "/dashboard";
 
 Modal.setAppElement('#root');
 ConfirmModal.setAppElement('#root');
+SwapModal.setAppElement('#root');
 
 class today extends Component {
   constructor(props){
@@ -30,6 +36,8 @@ class today extends Component {
       tooltip:[],
       openModal: false,
       confirmDel: false,
+      swapModal: false,
+      swapDay:[],
       button:[]
     }
     this.openModal = this.openModal.bind(this);
@@ -44,8 +52,13 @@ class today extends Component {
     this.setState({confirmDel: true})
   }
 
+  swapModal = () => {
+    console.log(this)
+    this.setState({swapModal:true})
+  }
+
   closeModal = () => {
-    this.setState({modalIsOpen: false, confirmDel:false});
+    this.setState({modalIsOpen: false, confirmDel:false, swapModal:false});
   }
 
   pageRefresh = () => {
@@ -65,6 +78,14 @@ class today extends Component {
       return Promise.resolve(res);
     })
   }
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  swapDay = () => {
+    console.log(this)
+  };
 
   _handleNew = () => {
     this.openModal()
@@ -186,6 +207,36 @@ class today extends Component {
             Yes
           </Button>
         </ConfirmModal>
+        <SwapModal
+          className="swp-modal"
+          isOpen={this.state.swapModal}
+          onRequestClose={this.closeModal}>
+          <Typography style={{margin:5}}>
+            Please select a day to swap to:
+          </Typography>
+          <Select
+            value={this.state.day}
+            onChange={this.handleChange}
+            inputProps={{
+              name: 'day',
+              id: 'day-simple',
+            }}
+          >
+            <MenuItem value={1}>Sunday</MenuItem>
+            <MenuItem value={2}>Monday</MenuItem>
+            <MenuItem value={3}>Tuesday</MenuItem>
+            <MenuItem value={4}>Wednesday</MenuItem>
+            <MenuItem value={5}>Thursday</MenuItem>
+            <MenuItem value={6}>Friday</MenuItem>
+            <MenuItem value={7}>Saturday</MenuItem>
+          </Select>
+          <Button id="button" variant="contained" color="primary" onClick={event => this.swapDay()}>
+            Swap
+          </Button>
+          <Button id="button" variant="contained" onClick={event => this.closeModal()}>
+            <CancelIcon/>
+          </Button>
+        </SwapModal>
         <Modal
             className="nw-modal"
             isOpen={this.state.modalIsOpen}
@@ -195,7 +246,10 @@ class today extends Component {
         </Modal>
         <div className={this.props.className+"-workout-card"}>
           <Typography style={{marginBottom:5}} variant="h6">
-          {this.state.name}
+          {this.state.name} 
+          <Button id="sm-button" color="primary" onClick={event => this.swapModal()}>
+            <SwapIcon/>
+          </Button>
           </Typography>
           {this.state.exercises}
         </div>

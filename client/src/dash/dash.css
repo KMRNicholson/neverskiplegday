@@ -180,6 +180,28 @@
   max-width: 250px;
 }
 
+#sm-button {
+  float:right; 
+  max-width: 30px;
+  max-height: 30px; 
+  min-width: 30px;
+  min-height: 30px;
+  margin: 5px;
+}
+
+.swp-modal {
+  background-color: #F2F2F2;
+  border-radius: .5em;
+  outline:0;
+  text-align: center;
+  padding:1em;
+  margin:auto;
+  overflow-y: scroll;
+  margin-top: 100px;
+  z-index: 1;
+  max-width: 250px;
+}
+
 #weinfo {
   display: inline;
 }
