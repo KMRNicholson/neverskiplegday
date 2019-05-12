@@ -21,3 +21,4 @@ That should be it for now!
   - Upload avatar to user profile
   - Add timer to the current workout tab
   - Export workout history to CSV
+  - Ability to swap the day the workout is set to.
